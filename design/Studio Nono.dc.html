@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:oklch(0.17 0.012 280);}
+*{box-sizing:border-box}
+button{font-family:inherit;color:inherit}
+a{color:oklch(0.74 0.15 265)} a:hover{color:oklch(0.84 0.12 265)}
+input[type=range]{accent-color:oklch(0.68 0.17 265);width:100%;margin:0}
+</style>
+</helmet>
+<div style="display:grid;grid-template-columns:232px minmax(0,1fr);height:100vh;min-height:700px;font-family:'Urbanist',system-ui,sans-serif;font-size:14px;color:oklch(0.96 0.005 280);background:oklch(0.17 0.012 280);">
+
+  <aside style="display:flex;flex-direction:column;gap:28px;padding:22px 14px;background:oklch(0.14 0.012 280);border-right:1px solid oklch(0.25 0.014 280);">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 8px;">
+      <div style="width:30px;height:30px;border-radius:9px;background:oklch(0.68 0.17 265);display:grid;place-items:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:oklch(0.14 0.012 280);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;line-height:1;">
+        <span style="font-size:19px;font-weight:800;letter-spacing:-0.02em;">Studio Nono</span>
+      </div>
+    </div>
+
+    <nav style="display:flex;flex-direction:column;gap:4px;">
+      <div style="font-size:12px;font-weight:600;color:oklch(0.6 0.015 280);padding:0 10px 8px;letter-spacing:0.02em;">Créer</div>
+      <button onClick="{{ nav.studio.go }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border:0;border-radius:12px;cursor:pointer;text-align:left;background:{{ nav.studio.bg }};color:{{ nav.studio.fg }};">
+        <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:{{ nav.studio.iconBg }};color:{{ nav.studio.iconFg }};">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M4 12h16M4 17h7"></path></svg>
+        </span>
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:700;">Studio</span><span style="font-size:12px;color:oklch(0.62 0.015 280);">Multipiste</span></span>
+      </button>
+      <button onClick="{{ nav.beats.go }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border:0;border-radius:12px;cursor:pointer;text-align:left;background:{{ nav.beats.bg }};color:{{ nav.beats.fg }};">
+        <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:{{ nav.beats.iconBg }};color:{{ nav.beats.iconFg }};">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"></rect></svg>
+        </span>
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:700;">Beats</span><span style="font-size:12px;color:oklch(0.62 0.015 280);">Séquenceur et pads</span></span>
+      </button>
+      <button onClick="{{ nav.voix.go }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border:0;border-radius:12px;cursor:pointer;text-align:left;background:{{ nav.voix.bg }};color:{{ nav.voix.fg }};">
+        <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:{{ nav.voix.iconBg }};color:{{ nav.voix.iconFg }};">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"></path></svg>
+        </span>
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:700;">Voix</span><span style="font-size:12px;color:oklch(0.62 0.015 280);">Autotune et effets</span></span>
+      </button>
+      <button onClick="{{ nav.instru.go }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border:0;border-radius:12px;cursor:pointer;text-align:left;background:{{ nav.instru.bg }};color:{{ nav.instru.fg }};">
+        <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:{{ nav.instru.iconBg }};color:{{ nav.instru.iconFg }};">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M8 5v8M12 5v8M16 5v8"></path></svg>
+        </span>
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:700;">Instru</span><span style="font-size:12px;color:oklch(0.62 0.015 280);">Génération guidée</span></span>
+      </button>
+    </nav>
+
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:14px;background:oklch(0.19 0.014 280);border:1px solid oklch(0.26 0.014 280);">
+      <div style="font-size:12px;font-weight:600;color:oklch(0.6 0.015 280);">Projet en cours</div>
+      <div style="font-size:16px;font-weight:700;">Nuit blanche</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:oklch(0.72 0.015 280);">
+        <span>{{ projMeta }}</span>
+        <span>{{ projLen }}</span>
+      </div>
+    </div>
+  </aside>
+
+  <div style="display:grid;grid-template-rows:68px minmax(0,1fr) 80px;min-width:0;min-height:0;">
+
+    <header style="display:flex;align-items:center;gap:16px;padding:0 24px;border-bottom:1px solid oklch(0.25 0.014 280);">
+      <div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 0;overflow:hidden;">
+        <div style="font-size:21px;font-weight:700;letter-spacing:-0.015em;">{{ title }}</div>
+        <div style="font-size:13px;color:oklch(0.66 0.015 280);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ subtitle }}</div>
+      </div>
+      <div style="margin-left:auto;flex:none;display:flex;align-items:center;gap:10px;">
+        <div style="font-size:12px;white-space:nowrap;display:none;color:oklch(0.6 0.015 280);">Espace : lecture · R : enregistrer</div>
+        <button onClick="{{ exportMix }}" style="display:flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:10px;border:0;background:oklch(0.68 0.17 265);color:oklch(0.15 0.02 270);font-weight:700;font-size:14px;cursor:pointer;" style-hover="background:oklch(0.74 0.15 265)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
+          Exporter
+        </button>
+      </div>
+    </header>
+
+    <main style="min-height:0;overflow:auto;">
+
+      <sc-if value="{{ isStudio }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;min-height:100%;">
+          <div style="padding:20px 20px 24px 24px;min-width:0;flex:1 1 600px;">
+            <div style="border-radius:16px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);overflow-x:auto;overflow-y:hidden;">
+            <div style="position:relative;min-width:860px;">
+              <div style="display:grid;grid-template-columns:200px minmax(0,1fr);height:50px;border-bottom:1px solid oklch(0.27 0.014 280);">
+                <div style="display:flex;align-items:center;gap:8px;padding:0 16px;font-weight:700;border-right:1px solid oklch(0.27 0.014 280);">Pistes <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:oklch(0.6 0.015 280);font-weight:500;">{{ trackCount }}</span></div>
+                <div onClick="{{ seek }}" style="position:relative;cursor:pointer;">
+                  <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="4">
+                    <div style="position:absolute;top:6px;height:18px;left:calc({{ sec.left }}% + 2px);width:calc({{ sec.width }}% - 4px);border-radius:5px;background:{{ sec.bg }};color:{{ sec.fg }};font-size:11px;font-weight:700;display:flex;align-items:center;padding:0 7px;overflow:hidden;white-space:nowrap;">{{ sec.name }}</div>
+                  </sc-for>
+                  <sc-for list="{{ barNums }}" as="bn" hint-placeholder-count="16">
+                    <div style="position:absolute;bottom:5px;left:{{ bn.left }}%;padding-left:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:oklch(0.58 0.015 280);border-left:1px solid oklch(0.32 0.014 280);height:14px;line-height:14px;">{{ bn.n }}</div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <sc-for list="{{ tracks }}" as="t" hint-placeholder-count="4">
+                <div onClick="{{ t.select }}" style="display:grid;grid-template-columns:200px minmax(0,1fr);height:80px;border-bottom:1px solid oklch(0.25 0.014 280);cursor:pointer;">
+                  <div style="display:flex;flex-direction:column;justify-content:center;gap:8px;padding:0 14px 0 16px;border-right:1px solid oklch(0.27 0.014 280);background:{{ t.headBg }};">
+                    <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+                      <span style="width:8px;height:8px;border-radius:50%;flex:none;background:{{ t.color }};"></span>
+                      <span style="font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.name }}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <button onClick="{{ t.toggleMute }}" title="Muet" style="width:24px;height:22px;border-radius:6px;border:1px solid oklch(0.34 0.014 280);font-size:11px;font-weight:700;cursor:pointer;padding:0;background:{{ t.muteBg }};color:{{ t.muteFg }};">M</button>
+                      <div style="flex:1;height:4px;border-radius:2px;background:oklch(0.3 0.014 280);overflow:hidden;"><div style="height:100%;border-radius:2px;width:{{ t.vol }}%;background:{{ t.color }};"></div></div>
+                      <sc-if value="{{ t.hasFx }}" hint-placeholder-val="{{ false }}">
+                        <span style="font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:5px;background:oklch(0.3 0.06 265);color:oklch(0.86 0.08 265);">{{ t.fxLabel }}</span>
+                      </sc-if>
+                    </div>
+                  </div>
+                  <div style="position:relative;background-image:linear-gradient(to right, oklch(0.25 0.012 280) 1px, transparent 1px);background-size:{{ barPct }}% 100%;opacity:{{ t.laneOpacity }};">
+                    <sc-for list="{{ t.clips }}" as="clip" hint-placeholder-count="2">
+                      <div style="position:absolute;top:8px;bottom:8px;left:calc({{ clip.left }}% + 2px);width:calc({{ clip.width }}% - 4px);border-radius:8px;overflow:hidden;background:{{ clip.bg }};border:1px solid {{ clip.line }};color:{{ clip.color }};">
+                        <div style="position:absolute;top:4px;left:7px;font-size:10.5px;font-weight:700;white-space:nowrap;color:{{ clip.labelColor }};">{{ clip.label }}</div>
+                        <sc-if value="{{ clip.isWave }}" hint-placeholder-val="{{ true }}">
+                          <div style="position:absolute;top:20px;bottom:6px;left:5px;right:5px;display:flex;align-items:center;gap:1px;">
+                            <sc-for list="{{ clip.bars }}" as="b" hint-placeholder-count="24">
+                              <div style="flex:1;min-width:1px;border-radius:1px;background:currentColor;height:{{ b.h }}%;"></div>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ clip.isChords }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute;top:20px;bottom:4px;left:0;right:0;display:flex;">
+                            <sc-for list="{{ clip.chords }}" as="ch" hint-placeholder-count="4">
+                              <div style="flex:1;min-width:0;display:grid;place-items:center;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;border-left:1px dashed {{ ch.line }};">{{ ch.name }}</div>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+
+              <div style="display:grid;grid-template-columns:200px minmax(0,1fr);height:64px;">
+                <div style="border-right:1px solid oklch(0.27 0.014 280);"></div>
+                <div style="padding:10px;">
+                  <button onClick="{{ toggleRec }}" style="width:100%;height:100%;border-radius:10px;border:1px dashed oklch(0.36 0.014 280);background:transparent;color:oklch(0.68 0.015 280);font-size:13px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;" style-hover="background:oklch(0.23 0.014 280);color:oklch(0.9 0.01 280)">
+                    <span style="width:9px;height:9px;border-radius:50%;background:oklch(0.66 0.2 25);"></span>{{ recCta }}
+                  </button>
+                </div>
+              </div>
+
+              <div style="position:absolute;top:0;bottom:0;left:200px;right:0;pointer-events:none;">
+                <div ref="{{ headRef }}" style="position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:oklch(0.72 0.17 40);box-shadow:0 0 12px oklch(0.72 0.17 40 / 0.5);">
+                  <div style="position:absolute;top:0;left:-5px;width:12px;height:10px;border-radius:0 0 6px 6px;background:oklch(0.72 0.17 40);"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <aside style="flex:1 0 260px;max-width:100%;border-left:1px solid oklch(0.25 0.014 280);padding:20px;display:flex;flex-direction:column;gap:22px;background:oklch(0.185 0.013 280);">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="width:12px;height:12px;border-radius:4px;background:{{ insp.color }};"></span>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <div style="font-size:17px;font-weight:700;">{{ insp.name }}</div>
+                <div style="font-size:12px;color:oklch(0.64 0.015 280);">{{ insp.kindLabel }}</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Volume</span><span style="font-family:'JetBrains Mono',monospace;color:oklch(0.72 0.015 280);">{{ insp.vol }}%</span></div>
+              <input type="range" min="0" max="100" value="{{ insp.vol }}" onChange="{{ insp.onVol }}" onInput="{{ insp.onVol }}">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Panoramique</span><span style="font-family:'JetBrains Mono',monospace;color:oklch(0.72 0.015 280);">{{ insp.panLabel }}</span></div>
+              <input type="range" min="-50" max="50" value="{{ insp.pan }}" onChange="{{ insp.onPan }}">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:oklch(0.58 0.015 280);"><span>Gauche</span><span>Droite</span></div>
+            </div>
+            <sc-if value="{{ insp.isVoice }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:12px;background:oklch(0.22 0.014 280);border:1px solid oklch(0.28 0.014 280);">
+                <div style="font-size:12px;color:oklch(0.64 0.015 280);">Effet de voix</div>
+                <div style="font-size:16px;font-weight:700;">{{ insp.fxName }}</div>
+              </div>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <button onClick="{{ insp.action }}" style="height:40px;border-radius:10px;border:1px solid oklch(0.34 0.014 280);background:oklch(0.24 0.014 280);font-weight:700;font-size:14px;cursor:pointer;" style-hover="background:oklch(0.28 0.016 280)">{{ insp.actionLabel }}</button>
+              <sc-if value="{{ insp.canDelete }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ insp.remove }}" style="height:36px;border-radius:10px;border:0;background:transparent;color:oklch(0.72 0.13 25);font-weight:600;font-size:13px;cursor:pointer;">Supprimer la prise</button>
+              </sc-if>
+            </div>
+          </aside>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isBeats }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:24px;display:flex;flex-direction:column;gap:20px;max-width:1240px;">
+          <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:20px 22px 22px;display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <div style="font-size:16px;font-weight:700;">Motif</div>
+              <div style="display:flex;gap:4px;padding:4px;border-radius:11px;background:oklch(0.17 0.012 280);flex-wrap:wrap;">
+                <sc-for list="{{ presets }}" as="p" hint-placeholder-count="7">
+                  <button onClick="{{ p.pick }}" style="height:30px;padding:0 12px;border-radius:8px;border:0;font-size:13px;font-weight:600;cursor:pointer;background:{{ p.bg }};color:{{ p.fg }};">{{ p.name }}</button>
+                </sc-for>
+              </div>
+              <div style="margin-left:auto;font-size:12px;color:oklch(0.6 0.015 280);">Cliquez sur une case pour l'activer · 16 pas = 1 mesure</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ beatRows }}" as="r" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px;align-items:center;">
+                  <div style="display:flex;align-items:center;gap:8px;opacity:{{ r.nameOpacity }};">
+                    <button onClick="{{ r.toggleMute }}" title="Muet" style="width:26px;height:26px;border-radius:7px;border:1px solid oklch(0.34 0.014 280);padding:0;font-size:11px;font-weight:700;cursor:pointer;background:{{ r.muteBg }};color:{{ r.muteFg }};">M</button>
+                    <button onClick="{{ r.preview }}" style="flex:1;display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border-radius:9px;border:0;background:transparent;cursor:pointer;text-align:left;" style-hover="background:oklch(0.24 0.014 280)">
+                      <span style="width:8px;height:8px;border-radius:50%;background:{{ r.color }};"></span>
+                      <span style="font-weight:700;font-size:14px;">{{ r.name }}</span>
+                    </button>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;">
+                    <sc-for list="{{ r.groups }}" as="g" hint-placeholder-count="4">
+                      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;">
+                        <sc-for list="{{ g.cells }}" as="c" hint-placeholder-count="4">
+                          <button onClick="{{ c.toggle }}" style="height:40px;border-radius:8px;border:0;cursor:pointer;padding:0;background:{{ c.bg }};transform:{{ c.scale }};box-shadow:{{ c.shadow }};transition:transform 90ms ease-out;"></button>
+                        </sc-for>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px;margin-top:4px;">
+                <div></div>
+                <div style="display:grid;grid-template-columns:repeat(16,minmax(0,1fr));column-gap:5px;">
+                  <sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="16">
+                    <div style="display:flex;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:{{ d.fg }};margin-right:{{ d.gap }}px;">{{ d.n }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:20px 22px 22px;display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;align-items:baseline;gap:12px;">
+              <div style="font-size:16px;font-weight:700;">Pads</div>
+              <div style="font-size:12px;color:oklch(0.6 0.015 280);">Jouez en direct à la souris ou au clavier</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;">
+              <sc-for list="{{ pads }}" as="pd" hint-placeholder-count="6">
+                <button onPointerDown="{{ pd.hit }}" style="height:120px;border-radius:14px;border:1px solid {{ pd.line }};cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:12px 14px;text-align:left;background:{{ pd.bg }};color:{{ pd.fg }};transform:{{ pd.scale }};transition:transform 80ms ease-out, background 120ms ease-out;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:2px 7px;border-radius:5px;background:oklch(0.12 0.01 280 / 0.35);">{{ pd.key }}</span>
+                  <span style="font-weight:700;font-size:15px;">{{ pd.name }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isVoix }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;padding:24px;max-width:1320px;">
+          <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:20px 22px 22px;display:flex;flex-direction:column;gap:18px;min-width:0;">
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <div style="font-size:16px;font-weight:700;">{{ graphTitle }}</div>
+              <div style="display:flex;gap:4px;padding:4px;border-radius:11px;background:oklch(0.17 0.012 280);margin-left:auto;">
+                <sc-for list="{{ srcOpts }}" as="so" hint-placeholder-count="2">
+                  <button onClick="{{ so.pick }}" style="height:30px;padding:0 12px;border-radius:8px;border:0;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;background:{{ so.bg }};color:{{ so.fg }};opacity:{{ so.opacity }};">{{ so.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);height:300px;">
+              <div style="position:relative;">
+                <sc-for list="{{ graph.labels }}" as="lb" hint-placeholder-count="7">
+                  <div style="position:absolute;left:0;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;top:{{ lb.top }}%;color:{{ lb.fg }};font-weight:{{ lb.weight }};">{{ lb.name }}</div>
+                </sc-for>
+              </div>
+              <div style="position:relative;border-radius:12px;background:oklch(0.175 0.012 280);overflow:hidden;">
+                <sc-if value="{{ srcIsDemo }}" hint-placeholder-val="{{ true }}">
+                  <svg viewBox="0 0 600 240" preserveAspectRatio="none" style="position:absolute;inset:12px 0;width:100%;height:calc(100% - 24px);overflow:visible;">
+                    <path d="{{ graph.grid }}" stroke="oklch(0.28 0.014 280)" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"></path>
+                    <polyline points="{{ graph.raw }}" fill="none" stroke="oklch(0.62 0.015 280)" stroke-width="1.6" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"></polyline>
+                    <polyline points="{{ graph.eff }}" fill="none" stroke="oklch(0.74 0.15 265)" stroke-width="2.6" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity="{{ graph.effOpacity }}"></polyline>
+                  </svg>
+                </sc-if>
+                <sc-if value="{{ srcIsRec }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;inset:24px 14px;display:flex;align-items:center;gap:2px;color:oklch(0.74 0.15 265);">
+                    <sc-for list="{{ recBars }}" as="rb" hint-placeholder-count="40">
+                      <div style="flex:1;min-width:1px;border-radius:1px;background:currentColor;height:{{ rb.h }}%;"></div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div ref="{{ voiceHeadRef }}" style="position:absolute;top:0;bottom:0;width:2px;background:oklch(0.72 0.17 40);opacity:0;pointer-events:none;"></div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:oklch(0.72 0.015 280);"><span style="width:18px;border-top:2px dashed oklch(0.62 0.015 280);"></span>Voix originale</div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:oklch(0.86 0.06 265);"><span style="width:18px;height:3px;border-radius:2px;background:oklch(0.74 0.15 265);"></span>{{ legendEff }}</div>
+              <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+                <button onClick="{{ previewRaw }}" style="white-space:nowrap;height:40px;padding:0 16px;border-radius:10px;border:1px solid oklch(0.34 0.014 280);background:oklch(0.24 0.014 280);font-weight:700;font-size:14px;cursor:pointer;">{{ previewRawLabel }}</button>
+                <button onClick="{{ previewFx }}" style="white-space:nowrap;height:40px;padding:0 18px;border-radius:10px;border:0;background:oklch(0.68 0.17 265);color:oklch(0.15 0.02 270);font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"></path></svg>{{ previewFxLabel }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:20px;display:flex;flex-direction:column;gap:14px;">
+              <div style="font-size:16px;font-weight:700;">Effets</div>
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+                <sc-for list="{{ fxList }}" as="f" hint-placeholder-count="8">
+                  <button onClick="{{ f.pick }}" style="display:flex;flex-direction:column;gap:3px;align-items:flex-start;padding:11px 12px;border-radius:11px;cursor:pointer;text-align:left;background:{{ f.bg }};border:1px solid {{ f.line }};">
+                    <span style="font-weight:700;font-size:14px;">{{ f.name }}</span>
+                    <span style="font-size:12px;color:oklch(0.66 0.015 280);">{{ f.desc }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <sc-if value="{{ isAutotune }}" hint-placeholder-val="{{ true }}">
+              <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:20px;display:flex;flex-direction:column;gap:16px;">
+                <div style="font-size:16px;font-weight:700;">Réglages autotune</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="font-size:13px;font-weight:600;">Tonalité</div>
+                  <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;">
+                    <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+                      <button onClick="{{ k.pick }}" style="height:30px;border-radius:7px;border:0;font-size:12px;font-weight:700;cursor:pointer;padding:0;background:{{ k.bg }};color:{{ k.fg }};">{{ k.name }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="font-size:13px;font-weight:600;">Gamme</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:10px;background:oklch(0.17 0.012 280);">
+                    <sc-for list="{{ scales }}" as="sc" hint-placeholder-count="2">
+                      <button onClick="{{ sc.pick }}" style="height:30px;border-radius:7px;border:0;font-size:13px;font-weight:600;cursor:pointer;background:{{ sc.bg }};color:{{ sc.fg }};">{{ sc.name }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;"><span>Correction</span><span style="font-family:'JetBrains Mono',monospace;color:oklch(0.72 0.015 280);">{{ retune }}% · {{ retuneLabel }}</span></div>
+                  <input type="range" min="0" max="100" value="{{ retune }}" onChange="{{ onRetune }}">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:oklch(0.58 0.015 280);"><span>Naturel</span><span>Robotique</span></div>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:20px;display:flex;flex-direction:column;gap:12px;">
+              <div style="font-size:13px;font-weight:600;">Appliquer à la piste</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <sc-for list="{{ applyTargets }}" as="at" hint-placeholder-count="2">
+                  <button onClick="{{ at.pick }}" style="height:32px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:{{ at.bg }};border:1px solid {{ at.line }};">{{ at.name }}</button>
+                </sc-for>
+              </div>
+              <button onClick="{{ applyFx }}" style="height:40px;border-radius:10px;border:0;background:oklch(0.96 0.005 280);color:oklch(0.17 0.012 280);font-weight:700;font-size:14px;cursor:pointer;">Appliquer {{ fxName }}</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isInstru }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px;padding:24px;max-width:1320px;">
+          <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:22px;display:flex;flex-direction:column;gap:24px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:800;background:oklch(0.3 0.06 265);color:oklch(0.86 0.08 265);">1</span><span style="font-size:16px;font-weight:700;">Style</span></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
+                <sc-for list="{{ styles }}" as="s" hint-placeholder-count="6">
+                  <button onClick="{{ s.pick }}" style="display:flex;flex-direction:column;gap:4px;align-items:flex-start;padding:12px 13px;border-radius:12px;cursor:pointer;text-align:left;background:{{ s.bg }};border:1px solid {{ s.line }};">
+                    <span style="font-weight:700;font-size:15px;">{{ s.name }}</span>
+                    <span style="font-size:12px;color:oklch(0.66 0.015 280);">{{ s.desc }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap;color:oklch(0.6 0.015 280);">{{ s.bpm }} BPM</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:800;background:oklch(0.3 0.06 265);color:oklch(0.86 0.08 265);">2</span><span style="font-size:16px;font-weight:700;">Ambiance</span></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <sc-for list="{{ moods }}" as="m" hint-placeholder-count="5">
+                  <button onClick="{{ m.pick }}" style="height:36px;padding:0 16px;border-radius:18px;font-size:14px;font-weight:600;cursor:pointer;background:{{ m.bg }};border:1px solid {{ m.line }};color:{{ m.fg }};">{{ m.name }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <button onClick="{{ generate }}" style="margin-top:auto;height:52px;border-radius:14px;border:0;background:oklch(0.68 0.17 265);color:oklch(0.15 0.02 270);font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;" style-hover="background:oklch(0.74 0.15 265)" style-active="transform:scale(0.98)">{{ generateLabel }}</button>
+          </div>
+
+          <div style="border-radius:18px;background:oklch(0.205 0.014 280);border:1px solid oklch(0.27 0.014 280);padding:22px;display:flex;flex-direction:column;gap:22px;opacity:{{ resultOpacity }};transition:opacity 200ms ease;">
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="font-size:12px;font-weight:600;color:oklch(0.6 0.015 280);">Votre instru</div>
+              <div style="font-size:24px;font-weight:800;letter-spacing:-0.02em;">{{ instruTitle }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:oklch(0.7 0.015 280);">{{ instruMeta }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:13px;font-weight:600;">Accords</div>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;">
+                <sc-for list="{{ chordTiles }}" as="ct" hint-placeholder-count="4">
+                  <div style="height:68px;border-radius:12px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:{{ ct.bg }};border:1px solid {{ ct.line }};transition:background 120ms ease;">
+                    <span style="font-size:20px;font-weight:800;">{{ ct.name }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:oklch(0.62 0.015 280);">{{ ct.deg }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:13px;font-weight:600;">Structure</div>
+              <div style="display:grid;grid-template-columns:76px minmax(0,1fr);row-gap:6px;column-gap:10px;align-items:center;">
+                <div></div>
+                <div style="display:flex;gap:4px;">
+                  <sc-for list="{{ arrHead }}" as="ah" hint-placeholder-count="4">
+                    <div style="flex:1;min-width:0;font-size:11.5px;font-weight:700;padding:4px 6px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:{{ ah.bg }};color:{{ ah.fg }};">{{ ah.name }}</div>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ arrRows }}" as="ar" hint-placeholder-count="3">
+                  <div style="font-size:12px;color:oklch(0.7 0.015 280);">{{ ar.name }}</div>
+                  <div style="display:flex;gap:4px;">
+                    <sc-for list="{{ ar.cells }}" as="ac" hint-placeholder-count="4">
+                      <div style="flex:1;height:22px;border-radius:5px;background:{{ ac.bg }};"></div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:auto;flex-wrap:wrap;">
+              <button onClick="{{ togglePlay }}" style="height:42px;padding:0 18px;border-radius:10px;border:0;background:oklch(0.96 0.005 280);color:oklch(0.17 0.012 280);font-weight:700;font-size:14px;cursor:pointer;">{{ listenLabel }}</button>
+              <button onClick="{{ nextVariant }}" style="height:42px;padding:0 16px;border-radius:10px;border:1px solid oklch(0.34 0.014 280);background:oklch(0.24 0.014 280);font-weight:700;font-size:14px;cursor:pointer;">Une autre version</button>
+              <button onClick="{{ openStudio }}" style="height:42px;padding:0 16px;border-radius:10px;border:1px solid oklch(0.34 0.014 280);background:transparent;font-weight:700;font-size:14px;cursor:pointer;margin-left:auto;">Ouvrir dans le studio</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+
+    <footer style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:0 24px;border-top:1px solid oklch(0.25 0.014 280);background:oklch(0.15 0.012 280);">
+      <div style="display:flex;align-items:baseline;gap:14px;min-width:0;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;letter-spacing:-0.02em;">{{ timeLabel }}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:oklch(0.58 0.015 280);">/ {{ totalLabel }}</span>
+        <span style="font-size:13px;color:oklch(0.66 0.015 280);white-space:nowrap;">{{ posLabel }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button onClick="{{ toStart }}" title="Début" style="width:40px;height:40px;border-radius:50%;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:oklch(0.8 0.01 280);" style-hover="background:oklch(0.22 0.014 280)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="2.5" height="14" rx="1"></rect><path d="M19 5.5v13L9 12z"></path></svg>
+        </button>
+        <button onClick="{{ togglePlay }}" title="Lecture" style="width:52px;height:52px;border-radius:50%;border:0;background:oklch(0.68 0.17 265);color:oklch(0.15 0.02 270);cursor:pointer;display:grid;place-items:center;" style-active="transform:scale(0.95)">
+          <sc-if value="{{ notPlaying }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"></path></svg></sc-if>
+          <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg></sc-if>
+        </button>
+        <button onClick="{{ toggleRec }}" title="Enregistrer (R)" style="width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center;background:{{ recBg }};border:2px solid oklch(0.66 0.2 25);">
+          <span style="width:14px;height:14px;background:oklch(0.66 0.2 25);border-radius:{{ recRadius }};"></span>
+        </button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:18px;">
+        <div style="display:flex;align-items:center;gap:4px;padding:4px;border-radius:10px;background:oklch(0.21 0.014 280);">
+          <button onClick="{{ bpmDown }}" style="width:28px;height:28px;border-radius:7px;border:0;background:transparent;cursor:pointer;font-size:16px;font-weight:700;">−</button>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;min-width:62px;text-align:center;">{{ bpm }} BPM</span>
+          <button onClick="{{ bpmUp }}" style="width:28px;height:28px;border-radius:7px;border:0;background:transparent;cursor:pointer;font-size:16px;font-weight:700;">+</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;width:150px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(0.7 0.015 280)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M4 9.5h4l5-4v13l-5-4H4z"></path><path d="M16.5 9a4 4 0 0 1 0 6"></path></svg>
+          <input type="range" min="0" max="100" value="{{ master }}" onChange="{{ onMaster }}">
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:100px;transform:translateX(-50%);padding:11px 18px;border-radius:12px;background:oklch(0.96 0.005 280);color:oklch(0.17 0.012 280);font-weight:600;font-size:14px;box-shadow:0 12px 32px oklch(0 0 0 / 0.45);z-index:10;white-space:nowrap;">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;studio&quot;,&quot;beats&quot;,&quot;voix&quot;,&quot;instru&quot;],&quot;default&quot;:&quot;studio&quot;,&quot;tsType&quot;:&quot;'studio'|'beats'|'voix'|'instru'&quot;}}">
+class Component extends DCLogic {
+  ROWS = [
+    { id: 'kick', name: 'Kick', key: 'Q', hue: 265 },
+    { id: 'snare', name: 'Caisse claire', key: 'S', hue: 305 },
+    { id: 'clap', name: 'Clap', key: 'D', hue: 345 },
+    { id: 'hat', name: 'Charley', key: 'F', hue: 175 },
+    { id: 'open', name: 'Charley ouvert', key: 'G', hue: 205 },
+    { id: 'perc', name: 'Perc', key: 'H', hue: 70 },
+  ];
+  PATTERNS = {
+    trap:  ['x......x..x.....', '........x.......', '........x.......', 'x.x.x.x.xxx.x.xx', '..............x.', '................'],
+    lofi:  ['x.....x...x.....', '....x.......x...', '................', 'x.x.x.x.x.x.x.x.', '................', '......x.......x.'],
+    afro:  ['x..x..x...x..x..', '....x.......x...', '..........x.....', 'x.xxx.xxx.xxx.xx', '................', '..x...x....x..x.'],
+    pop:   ['x...x...x...x...', '....x.......x...', '....x.......x...', '..x...x...x...x.', '................', '................'],
+    drill: ['x......x.x......', '........x.......', '................', 'x..x..x.x..x..x.', '................', '...x.......x....'],
+    house: ['x...x...x...x...', '................', '....x.......x...', 'x.x.x.x.x.x.x.x.', '..x...x...x...x.', '.......x.......x'],
+    vide:  ['................', '................', '................', '................', '................', '................'],
+  };
+  BASS = { trap: 'x.......x.x.....', lofi: 'x.....x...x.....', afro: 'x..x....x..x.x..', pop: 'x.x...x.x.x...x.', drill: 'x.....x..x......', house: '..x...x...x...x.' };
+  STYLES = [
+    { id: 'trap', name: 'Trap', bpm: 140, desc: '808 et charleys rapides', forms: [['Intro', 'Couplet', 'Refrain', 'Couplet', 'Refrain', 'Outro'], ['Intro', 'Refrain', 'Couplet', 'Refrain']] },
+    { id: 'lofi', name: 'Lo-fi', bpm: 82, desc: 'Doux et posé', forms: [['Intro', 'Couplet', 'Refrain', 'Couplet'], ['Intro', 'Couplet', 'Pont', 'Refrain', 'Outro']] },
+    { id: 'afro', name: 'Afro', bpm: 104, desc: 'Rythmes chaloupés', forms: [['Intro', 'Couplet', 'Refrain', 'Couplet', 'Refrain'], ['Intro', 'Refrain', 'Pont', 'Refrain']] },
+    { id: 'pop', name: 'Pop', bpm: 112, desc: 'Simple et efficace', forms: [['Intro', 'Couplet', 'Refrain', 'Pont', 'Refrain', 'Outro'], ['Couplet', 'Refrain', 'Couplet', 'Refrain']] },
+    { id: 'drill', name: 'Drill', bpm: 142, desc: 'Sombre et syncopé', forms: [['Intro', 'Refrain', 'Couplet', 'Refrain'], ['Intro', 'Couplet', 'Refrain', 'Outro']] },
+    { id: 'house', name: 'House', bpm: 124, desc: 'Kick sur chaque temps', forms: [['Intro', 'Couplet', 'Refrain', 'Pont', 'Refrain'], ['Intro', 'Refrain', 'Refrain', 'Outro']] },
+  ];
+  MOODS = [
+    { id: 'Mélancolique', scale: 'mineur', progs: [[0, 5, 2, 6], [0, 3, 5, 4]], keys: [9, 4, 2] },
+    { id: 'Sombre', scale: 'mineur', progs: [[0, 5, 0, 4], [0, 3, 4, 0]], keys: [4, 7, 1] },
+    { id: 'Joyeux', scale: 'majeur', progs: [[0, 4, 5, 3], [0, 3, 0, 4]], keys: [0, 7, 2] },
+    { id: 'Énergique', scale: 'mineur', progs: [[0, 6, 5, 6], [0, 5, 6, 4]], keys: [11, 6, 9] },
+    { id: 'Planant', scale: 'majeur', progs: [[0, 2, 3, 3], [3, 4, 2, 5]], keys: [5, 3, 10] },
+  ];
+  FX = [
+    { id: 'none', name: 'Aucun', desc: 'Voix naturelle' },
+    { id: 'autotune', name: 'Autotune', desc: 'Corrige la justesse' },
+    { id: 'robot', name: 'Robot', desc: 'Timbre métallique' },
+    { id: 'grave', name: 'Grave', desc: 'Voix plus basse' },
+    { id: 'aigu', name: 'Aigu', desc: 'Voix plus haute' },
+    { id: 'radio', name: 'Radio', desc: 'Filtre téléphone' },
+    { id: 'echo', name: 'Écho', desc: 'Répétitions en rythme' },
+    { id: 'choeur', name: 'Chœur', desc: 'Voix doublées' },
+  ];
+  NOTES = ['Do', 'Do#', 'Ré', 'Ré#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si'];
+  SCALES = { majeur: [0, 2, 4, 5, 7, 9, 11], mineur: [0, 2, 3, 5, 7, 8, 10] };
+  ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+  SECTIONS = { Intro: { drums: 'light', bass: false }, Couplet: { drums: 'full', bass: true }, Refrain: { drums: 'full', bass: true }, Pont: { drums: 'light', bass: true }, Outro: { drums: 'none', bass: false } };
+  TITLES = {
+    studio: ['Studio', 'Enregistrez et arrangez vos pistes'],
+    beats: ['Beats', 'Composez un motif pas à pas, jouez sur les pads'],
+    voix: ['Voix', 'Autotune, robot, écho : transformez votre voix'],
+    instru: ['Instru', 'Choisissez un style et une ambiance, Studio Nono compose le reste'],
+  };
+  headRef = React.createRef();
+  voiceHeadRef = React.createRef();
+  queue = [];
+  active = [];
+  buffers = {};
+  parse(p) { return p.map(s => s.split('').map(c => c === 'x')); }
+
+  state = {
+    screen: 'studio', playing: false, step: 0, bpm: 82, master: 80, recording: false, recId: null,
+    grid: this.parse(this.PATTERNS.lofi), rowMute: {}, preset: 'lofi', padHit: null,
+    style: 'lofi', mood: 'Mélancolique', key: 9, scale: 'mineur', variant: 0,
+    blocks: ['Intro', 'Couplet', 'Refrain', 'Couplet'], selStyle: 'lofi', selMood: 'Mélancolique', generating: false,
+    tracks: [
+      { id: 'drums', name: 'Batterie', kind: 'drums', hue: 265, vol: 85, pan: 0, mute: false, fx: 'none' },
+      { id: 'bass', name: 'Basse', kind: 'bass', hue: 175, vol: 75, pan: 0, mute: false, fx: 'none' },
+      { id: 'chords', name: 'Accords', kind: 'chords', hue: 305, vol: 65, pan: -10, mute: false, fx: 'none' },
+      { id: 'voice', name: 'Voix lead', kind: 'voice', hue: 70, vol: 80, pan: 0, mute: false, fx: 'autotune', clips: [{ start: 4, len: 4 }, { start: 8, len: 4 }] },
+    ],
+    sel: 'voice', applyTo: 'voice',
+    fx: 'autotune', retune: 85, voiceSrc: 'demo', voicePlaying: null, toast: null,
+  };
+
+  componentDidMount() {
+    const p = this.props || {};
+    const upd = {};
+    if (p.startScreen && this.TITLES[p.startScreen]) upd.screen = p.startScreen;
+    if (Object.keys(upd).length) this.setState(upd);
+    this._onKey = e => this.onKey(e);
+    window.addEventListener('keydown', this._onKey);
+    this.setHead(this.state.step);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this._onKey);
+    clearInterval(this.timer); cancelAnimationFrame(this.raf);
+    if (this.recStream) this.recStream.getTracks().forEach(t => t.stop());
+    if (this.ctx) this.ctx.close();
+  }
+  componentDidUpdate() {
+    const S = this.state;
+    if (!S.playing) this.setHead(S.step);
+    if (this._pm !== S.master && this.master) this.master.gain.value = S.master / 100;
+    if (this._pt !== S.tracks) this.syncMix();
+    this._pm = S.master; this._pt = S.tracks;
+  }
+
+  onKey(e) {
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.code === 'Space') { e.preventDefault(); this.togglePlay(); return; }
+    if (e.repeat) return;
+    if (e.key === 'r' || e.key === 'R') { this.toggleRec(); return; }
+    if (this.state.screen === 'beats') {
+      const r = this.ROWS.find(r => r.key.toLowerCase() === e.key.toLowerCase());
+      if (r) this.hit(r.id);
+    }
+  }
+
+  // ---------- audio core ----------
+  mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+  totalSteps() { return Math.max(1, this.state.blocks.length) * 64; }
+  stepDur() { return 60 / this.state.bpm / 4; }
+  ensureCtx() {
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = this.state.master / 100;
+      const comp = this.ctx.createDynamicsCompressor();
+      comp.threshold.value = -14; comp.ratio.value = 4;
+      this.master.connect(comp).connect(this.ctx.destination);
+      this.preview = this.ctx.createGain();
+      this.preview.connect(this.master);
+    }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    return this.ctx;
+  }
+  noiseBuf() {
+    if (!this._nb) {
+      const c = this.ctx, b = c.createBuffer(1, c.sampleRate, c.sampleRate), d = b.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      this._nb = b;
+    }
+    return this._nb;
+  }
+  makeBus() {
+    const c = this.ctx;
+    if (this.bus) { const old = this.bus; old.gain.setTargetAtTime(0, c.currentTime, 0.02); setTimeout(() => old.disconnect(), 300); }
+    this.bus = c.createGain(); this.bus.connect(this.master);
+    this.ch = {};
+    ['drums', 'bass', 'chords', 'voice'].forEach(k => {
+      const g = c.createGain(), p = c.createStereoPanner();
+      g.connect(p).connect(this.bus);
+      this.ch[k] = { g, p };
+    });
+    this.syncMix();
+  }
+  syncMix() {
+    if (!this.ch) return;
+    this.state.tracks.forEach(t => {
+      const c = this.ch[t.kind];
+      if (!c) return;
+      c.g.gain.value = t.mute ? 0 : t.vol / 100;
+      c.p.pan.value = t.pan / 50;
+    });
+  }
+  drum(id, t, out) {
+    const c = this.ctx, g = c.createGain(); g.connect(out);
+    const env = (peak, dec) => { g.gain.setValueAtTime(peak, t); g.gain.exponentialRampToValueAtTime(0.001, t + dec); };
+    const noise = () => { const s = c.createBufferSource(); s.buffer = this.noiseBuf(); return s; };
+    const bq = (type, f, q) => { const b = c.createBiquadFilter(); b.type = type; b.frequency.value = f; if (q) b.Q.value = q; return b; };
+    if (id === 'kick') {
+      const o = c.createOscillator();
+      o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.14);
+      env(1, 0.5); o.connect(g); o.start(t); o.stop(t + 0.55);
+    } else if (id === 'snare') {
+      const n = noise(); env(0.5, 0.18); n.connect(bq('highpass', 1300)).connect(g); n.start(t); n.stop(t + 0.2);
+      const o = c.createOscillator(), og = c.createGain(); o.type = 'triangle';
+      o.frequency.setValueAtTime(200, t); o.frequency.exponentialRampToValueAtTime(140, t + 0.08);
+      og.gain.setValueAtTime(0.45, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+      o.connect(og).connect(out); o.start(t); o.stop(t + 0.12);
+    } else if (id === 'clap') {
+      const n = noise(); g.gain.setValueAtTime(0.0001, t);
+      [0, 0.012, 0.024].forEach(d => { g.gain.setValueAtTime(0.7, t + d); g.gain.exponentialRampToValueAtTime(0.08, t + d + 0.01); });
+      g.gain.setValueAtTime(0.6, t + 0.036); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+      n.connect(bq('bandpass', 1500, 0.9)).connect(g); n.start(t); n.stop(t + 0.25);
+    } else if (id === 'hat' || id === 'open') {
+      const n = noise(), dec = id === 'open' ? 0.3 : 0.05;
+      env(id === 'open' ? 0.26 : 0.22, dec); n.connect(bq('highpass', 7600)).connect(g); n.start(t); n.stop(t + dec + 0.02);
+    } else if (id === 'perc') {
+      const o = c.createOscillator();
+      o.frequency.setValueAtTime(820, t); o.frequency.exponentialRampToValueAtTime(480, t + 0.06);
+      env(0.32, 0.12); o.connect(g); o.start(t); o.stop(t + 0.14);
+    }
+  }
+  pad(notes, t, dur) {
+    const c = this.ctx, f = c.createBiquadFilter(), g = c.createGain();
+    f.type = 'lowpass'; f.frequency.value = this.state.style === 'lofi' ? 900 : 1600; f.Q.value = 0.7;
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.16, t + 0.08);
+    g.gain.setValueAtTime(0.16, t + dur - 0.12); g.gain.linearRampToValueAtTime(0.0001, t + dur);
+    f.connect(g).connect(this.ch.chords.g);
+    notes.forEach(n => [-7, 7].forEach(dt => {
+      const o = c.createOscillator(), og = c.createGain();
+      o.type = 'sawtooth'; o.frequency.value = this.mtof(n); o.detune.value = dt; og.gain.value = 0.12;
+      o.connect(og).connect(f); o.start(t); o.stop(t + dur + 0.02);
+    }));
+  }
+  bass(n, t, dur) {
+    const c = this.ctx, g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.42, t + 0.01); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    g.connect(this.ch.bass.g);
+    [['triangle', n], ['sine', n - 12]].forEach(([type, m]) => {
+      const o = c.createOscillator(); o.type = type; o.frequency.value = this.mtof(m);
+      o.connect(g); o.start(t); o.stop(t + dur + 0.05);
+    });
+  }
+  buildFx(id, dest, t, dur) {
+    const c = this.ctx, inp = c.createGain(), end = t + dur + 2;
+    if (id === 'robot') {
+      const rm = c.createGain(), o = c.createOscillator(), mk = c.createGain();
+      rm.gain.value = 0; o.frequency.value = 70; o.connect(rm.gain); o.start(t); o.stop(end); mk.gain.value = 1.6;
+      inp.connect(rm).connect(mk).connect(dest);
+    } else if (id === 'radio') {
+      const hp = c.createBiquadFilter(), bp = c.createBiquadFilter(), ws = c.createWaveShaper(), g = c.createGain();
+      hp.type = 'highpass'; hp.frequency.value = 500; bp.type = 'bandpass'; bp.frequency.value = 1700; bp.Q.value = 1.1;
+      const cv = new Float32Array(256); for (let i = 0; i < 256; i++) { const x = i / 128 - 1; cv[i] = Math.tanh(x * 3); }
+      ws.curve = cv; g.gain.value = 1.3;
+      inp.connect(hp).connect(bp).connect(ws).connect(g).connect(dest);
+    } else if (id === 'echo') {
+      const d = c.createDelay(2), fb = c.createGain(), w = c.createGain();
+      d.delayTime.value = this.stepDur() * 3; fb.gain.value = 0.42; w.gain.value = 0.55;
+      inp.connect(dest); inp.connect(d); d.connect(fb).connect(d); d.connect(w).connect(dest);
+    } else if (id === 'choeur') {
+      inp.connect(dest);
+      [0.017, 0.029].forEach((dt, i) => {
+        const d = c.createDelay(0.1), l = c.createOscillator(), lg = c.createGain(), w = c.createGain(), p = c.createStereoPanner();
+        d.delayTime.value = dt; l.frequency.value = 0.7 + i * 0.4; lg.gain.value = 0.004; l.connect(lg).connect(d.delayTime);
+        l.start(t); l.stop(end); w.gain.value = 0.6; p.pan.value = i ? 0.6 : -0.6;
+        inp.connect(d).connect(w).connect(p).connect(dest);
+      });
+    } else inp.connect(dest);
+    return inp;
+  }
+  tonic() { return 52 + ((this.state.key - 4 + 12) % 12); }
+  scaleNote(base, deg) {
+    const sc = this.SCALES[this.state.scale], o = Math.floor(deg / 7), i = ((deg % 7) + 7) % 7;
+    return base + 12 * o + sc[i];
+  }
+  voiceCurve() {
+    const S = this.state, k = S.key + '|' + S.scale + '|' + S.retune;
+    if (this._vc && this._vc.k === k) return this._vc;
+    const mel = [[0, .5], [2, .4], [4, .7], [3, .35], [2, .45], [1, .4], [2, .9], [-1, .4], [0, .7]];
+    const off = [.38, -.42, .3, -.34, .45, -.28, .36, -.4, .32];
+    const tonic = this.tonic(), sc = this.SCALES[S.scale];
+    const starts = []; let acc = 0; mel.forEach(m => { starts.push(acc); acc += m[1]; });
+    const dur = acc, N = 360, raw = [], env = [], corr = [];
+    const note = d => this.scaleNote(tonic, d);
+    const snap = m => { let best = m, bd = 99; for (let o = -2; o <= 2; o++) sc.forEach(iv => { const c = tonic + 12 * o + iv; const d = Math.abs(c - m); if (d < bd) { bd = d; best = c; } }); return best; };
+    const a = S.retune / 100; let cc = 0;
+    for (let i = 0; i < N; i++) {
+      const tt = i / (N - 1) * dur;
+      let kk = 0; while (kk < mel.length - 1 && starts[kk + 1] <= tt) kk++;
+      const lt = tt - starts[kk], L = mel[kk][1];
+      const tgt = note(mel[kk][0]) + off[kk];
+      const prev = kk ? note(mel[kk - 1][0]) + off[kk - 1] : tgt - 1.5;
+      let p = tgt + (prev - tgt) * Math.exp(-lt / 0.07);
+      if (lt > 0.12) p += 0.3 * Math.sin(2 * Math.PI * 5.5 * tt) * Math.min(1, (lt - 0.12) / 0.25);
+      raw.push(p);
+      env.push(Math.max(0, Math.min(1, lt / 0.03, (L - lt) / 0.06)) * 0.85);
+      const target = p + (snap(p) - p) * a;
+      cc = i === 0 ? target : cc + (target - cc) * (0.15 + 0.85 * a);
+      corr.push(cc);
+    }
+    env[N - 1] = 0;
+    this._vc = { k, raw, corr, env, dur, tonic };
+    return this._vc;
+  }
+  playVoice({ t, fx, dest, useFx = true }) {
+    const c = this.ensureCtx(), vc = this.voiceCurve(), dur = vc.dur, eff = useFx ? fx : 'none';
+    const line = eff === 'autotune' ? vc.corr : vc.raw;
+    const fac = eff === 'grave' ? 0.7 : eff === 'aigu' ? 1.42 : 1;
+    const freqs = new Float32Array(line.map(m => this.mtof(m) * fac));
+    const fxIn = this.buildFx(eff === 'autotune' ? 'none' : eff, dest, t, dur);
+    const amp = c.createGain(); amp.gain.value = 0; amp.gain.setValueCurveAtTime(new Float32Array(vc.env), t, dur); amp.connect(fxIn);
+    const sum = c.createGain();
+    const fm = eff === 'aigu' ? 1.12 : eff === 'grave' ? 0.88 : 1;
+    [[700, 6, 1], [1150, 7, 0.6], [2600, 9, 0.25]].forEach(([f, q, gg]) => {
+      const b = c.createBiquadFilter(), bg = c.createGain();
+      b.type = 'bandpass'; b.frequency.value = f * fm; b.Q.value = q; bg.gain.value = gg * 2.4;
+      sum.connect(b).connect(bg).connect(amp);
+    });
+    const dets = eff === 'choeur' ? [-12, 0, 12] : [0];
+    dets.forEach(dt => {
+      const o = c.createOscillator(), og = c.createGain();
+      o.type = 'sawtooth'; o.frequency.value = freqs[0]; o.frequency.setValueCurveAtTime(freqs, t, dur); o.detune.value = dt;
+      og.gain.value = dets.length > 1 ? 0.28 : 0.5;
+      o.connect(og).connect(sum); o.start(t); o.stop(t + dur + 0.05);
+    });
+    return dur;
+  }
+  playBuf(buf, t, fx, dest, vol, pan) {
+    const c = this.ctx, src = c.createBufferSource(), g = c.createGain(), p = c.createStereoPanner();
+    src.buffer = buf; const rate = fx === 'grave' ? 0.8 : fx === 'aigu' ? 1.25 : 1; src.playbackRate.value = rate;
+    g.gain.value = vol; p.pan.value = pan;
+    const dur = buf.duration / rate;
+    src.connect(this.buildFx(fx, g, t, dur)); g.connect(p).connect(dest);
+    src.start(t); this.active.push(src);
+    return dur;
+  }
+  prog() {
+    const m = this.MOODS.find(m => m.id === this.state.mood) || this.MOODS[0];
+    return m.progs[this.state.variant % m.progs.length];
+  }
+  chordInfo(d) {
+    const sc = this.SCALES[this.state.scale];
+    const notes = [0, 2, 4].map(k => this.scaleNote(48 + this.state.key, d + k));
+    const third = notes[1] - notes[0], fifth = notes[2] - notes[0];
+    const q = fifth === 6 ? '°' : third === 3 ? 'm' : '';
+    const roman = q === 'm' || q === '°' ? this.ROMAN[d % 7].toLowerCase() + (q === '°' ? '°' : '') : this.ROMAN[d % 7];
+    return { notes, root: notes[0], name: this.NOTES[notes[0] % 12] + (q ? ' ' + q : ''), roman };
+  }
+  playStep(s, t) {
+    const S = this.state, st = s % 16, loop = S.screen === 'beats';
+    const bar = Math.floor(s / 16), block = S.blocks[Math.floor(bar / 4)] || 'Couplet';
+    const sec = loop ? { drums: 'full' } : (this.SECTIONS[block] || {});
+    if (sec.drums !== 'none') this.ROWS.forEach((r, i) => {
+      if (!S.grid[i][st] || S.rowMute[r.id]) return;
+      if (sec.drums === 'light' && !(r.id === 'hat' || r.id === 'open' || r.id === 'perc')) return;
+      this.drum(r.id, t, this.ch.drums.g);
+    });
+    if (loop) return;
+    const sd = this.stepDur(), chord = this.chordInfo(this.prog()[bar % 4]);
+    if (st === 0) this.pad(chord.notes, t, sd * 16);
+    if (sec.bass && (this.BASS[S.style] || '')[st] === 'x') this.bass(chord.root - 12, t, sd * 2.5);
+    S.tracks.forEach(tr => {
+      if (tr.mute) return;
+      if (tr.kind === 'voice' && tr.clips.some(cl => cl.start * 16 === s)) this.playVoice({ t, fx: tr.fx, dest: this.ch.voice.g });
+      if (tr.kind === 'rec' && this.buffers[tr.id] && tr.startStep === s) this.playBuf(this.buffers[tr.id], t, tr.fx, this.bus, tr.vol / 100, tr.pan / 50);
+    });
+  }
+  schedule() {
+    const c = this.ctx;
+    while (this.nextTime < c.currentTime + 0.12) {
+      this.playStep(this.curStep, this.nextTime);
+      this.queue.push({ step: this.curStep, time: this.nextTime });
+      this.nextTime += this.stepDur();
+      this.curStep = (this.curStep + 1) % this.totalSteps();
+    }
+  }
+  play() {
+    const c = this.ensureCtx();
+    this.makeBus();
+    this.curStep = this.state.step % this.totalSteps();
+    this.nextTime = c.currentTime + 0.05; this.queue = []; this.lastVis = null;
+    clearInterval(this.timer); this.timer = setInterval(() => this.schedule(), 25);
+    this.schedule();
+    this.setState({ playing: true });
+    this.startRaf();
+  }
+  pause() {
+    clearInterval(this.timer); this.timer = null;
+    if (this.state.recording) this.stopRec();
+    if (this.bus) { const old = this.bus; old.gain.setTargetAtTime(0, this.ctx.currentTime, 0.02); setTimeout(() => old.disconnect(), 300); this.bus = null; }
+    this.active.forEach(s => { try { s.stop(); } catch (e) {} }); this.active = [];
+    this.queue = [];
+    this.setState({ playing: false });
+  }
+  togglePlay() { this.state.playing ? this.pause() : this.play(); }
+  toStart() {
+    this.setState({ step: 0 });
+    if (this.state.playing) { this.curStep = 0; this.nextTime = this.ctx.currentTime + 0.05; this.queue = []; this.makeBus(); }
+  }
+  seek(e) {
+    const r = e.currentTarget.getBoundingClientRect();
+    const step = Math.max(0, Math.min(this.totalSteps() - 1, Math.round((e.clientX - r.left) / r.width * this.totalSteps() / 16) * 16));
+    this.setState({ step });
+    if (this.state.playing) { this.curStep = step; this.nextTime = this.ctx.currentTime + 0.05; this.queue = []; this.makeBus(); }
+  }
+  startRaf() {
+    cancelAnimationFrame(this.raf);
+    const loop = () => { this.tick(); if (this.state.playing || this.voicePreview) this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  tick() {
+    const c = this.ctx; if (!c) return;
+    const now = c.currentTime; let cur = null;
+    while (this.queue.length && this.queue[0].time <= now) cur = this.queue.shift();
+    if (cur) {
+      this.lastVis = cur;
+      if (cur.step !== this.state.step) {
+        if (this.state.recording) { if (cur.step < this.state.step) this.stopRec(); else this.recSample(); }
+        this.setState({ step: cur.step });
+      }
+    }
+    if (this.state.playing && this.lastVis) this.setHead(this.lastVis.step + Math.min(1, (now - this.lastVis.time) / this.stepDur()));
+    if (this.voicePreview) {
+      const p = (now - this.voicePreview.t0) / this.voicePreview.dur;
+      if (p >= 1) { this.voicePreview = null; this.setState({ voicePlaying: null }); this.setVoiceHead(-1); }
+      else this.setVoiceHead(p);
+    }
+  }
+  setHead(pos) { const el = this.headRef.current; if (el) el.style.left = (pos / this.totalSteps() * 100) + '%'; }
+  setVoiceHead(p) { const el = this.voiceHeadRef.current; if (!el) return; el.style.opacity = p < 0 ? 0 : 1; el.style.left = Math.max(0, p) * 100 + '%'; }
+
+  // ---------- recording ----------
+  async startRec() {
+    if (this.state.recording || this._arming) return;
+    this._arming = true;
+    const c = this.ensureCtx(); let real = false;
+    try {
+      if (!navigator.mediaDevices || !window.MediaRecorder) throw new Error('no');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      this.recStream = stream;
+      const an = c.createAnalyser(); an.fftSize = 1024; c.createMediaStreamSource(stream).connect(an); this.recAnalyser = an;
+      this.recChunks = []; const mr = new MediaRecorder(stream);
+      mr.ondataavailable = e => { if (e.data && e.data.size) this.recChunks.push(e.data); };
+      mr.start(); this.mr = mr; real = true;
+    } catch (e) { this.recAnalyser = null; this.mr = null; }
+    this._arming = false;
+    const n = this.state.tracks.filter(t => t.kind === 'rec').length + 1, id = 'rec' + Date.now();
+    const tr = { id, name: 'Prise ' + n, kind: 'rec', hue: 235, vol: 90, pan: 0, mute: false, fx: 'none', startStep: this.state.step, levels: [], hasAudio: false };
+    this.setState(s => ({ tracks: [...s.tracks, tr], sel: id, applyTo: id, recording: true, recId: id, screen: s.screen === 'beats' ? 'studio' : s.screen }));
+    this.toast(real ? 'Enregistrement en cours…' : 'Micro indisponible : prise simulée');
+    if (!this.state.playing) this.play();
+  }
+  recSample() {
+    let lv;
+    if (this.recAnalyser) {
+      const a = this.recAnalyser, d = new Float32Array(a.fftSize); a.getFloatTimeDomainData(d);
+      let s = 0; for (let i = 0; i < d.length; i++) s += d[i] * d[i];
+      lv = Math.min(1, Math.sqrt(s / d.length) * 6);
+    } else {
+      const k = (this._fake = (this._fake || 0) + 1);
+      lv = 0.12 + 0.75 * Math.abs(Math.sin(k * 0.37)) * (0.5 + 0.5 * Math.random());
+    }
+    this.setState(s => ({ tracks: s.tracks.map(t => t.id === s.recId ? { ...t, levels: [...t.levels, lv] } : t) }));
+  }
+  stopRec() {
+    if (!this.state.recording) return;
+    const id = this.state.recId, mr = this.mr, stream = this.recStream;
+    this.mr = null; this.recStream = null; this.recAnalyser = null;
+    this.setState({ recording: false, recId: null });
+    if (mr) {
+      mr.onstop = async () => {
+        try {
+          const blob = new Blob(this.recChunks, { type: mr.mimeType });
+          const buf = await this.ctx.decodeAudioData(await blob.arrayBuffer());
+          this.buffers[id] = buf; this.updTrack(id, { hasAudio: true });
+          this.toast('Prise enregistrée');
+        } catch (e) { this.toast('Prise enregistrée'); }
+        if (stream) stream.getTracks().forEach(t => t.stop());
+      };
+      mr.stop();
+    } else this.toast('Prise ajoutée au studio');
+  }
+  toggleRec() { this.state.recording ? this.stopRec() : this.startRec(); }
+
+  // ---------- actions ----------
+  toast(msg) { this.setState({ toast: msg }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: null }), 2400); }
+  go(screen) { this.setState({ screen }); }
+  updTrack(id, patch) { this.setState(s => ({ tracks: s.tracks.map(t => t.id === id ? { ...t, ...patch } : t) })); }
+  hit(id) {
+    const c = this.ensureCtx(); this.drum(id, c.currentTime, this.preview);
+    this.setState({ padHit: id }); clearTimeout(this._ph); this._ph = setTimeout(() => this.setState({ padHit: null }), 120);
+  }
+  toggleCell(r, st) {
+    this.setState(s => ({ grid: s.grid.map((row, i) => i === r ? row.map((v, j) => j === st ? !v : v) : row) }));
+    if (!this.state.grid[r][st]) this.hit(this.ROWS[r].id);
+  }
+  setPreset(id) {
+    const st = this.STYLES.find(s => s.id === id);
+    this.setState({ grid: this.parse(this.PATTERNS[id]), preset: id, ...(st ? { bpm: st.bpm } : {}) });
+  }
+  generate() {
+    const S = this.state;
+    const st = this.STYLES.find(s => s.id === S.selStyle), md = this.MOODS.find(m => m.id === S.selMood);
+    const same = S.style === st.id && S.mood === md.id;
+    const variant = same ? S.variant + 1 : 0;
+    this.setState({ generating: true });
+    setTimeout(() => {
+      this.setState({
+        generating: false, style: st.id, mood: md.id, scale: md.scale, key: md.keys[variant % md.keys.length], variant,
+        bpm: st.bpm, grid: this.parse(this.PATTERNS[st.id]), preset: st.id, blocks: st.forms[variant % st.forms.length], step: 0,
+      });
+      if (this.state.playing) { this.curStep = 0; this.nextTime = this.ctx.currentTime + 0.05; this.queue = []; this.makeBus(); }
+      this.toast('Instru prête : ' + st.name + ' · ' + md.id);
+    }, 650);
+  }
+
+  renderVals() {
+    const S = this.state, total = this.totalSteps(), bars = total / 16, sd = this.stepDur();
+    const col = (h, l = 0.72, c = 0.14) => `oklch(${l} ${c} ${h})`;
+    const fmt = sec => { const m = Math.floor(sec / 60), s = sec - m * 60; return String(m).padStart(2, '0') + ':' + s.toFixed(1).padStart(4, '0'); };
+    const rnd = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+    const step = Math.min(S.step, total - 1), curBar = Math.floor(step / 16), curBlock = Math.floor(curBar / 4);
+    const prog = this.prog(), chords = prog.map(d => this.chordInfo(d));
+    const keyName = this.NOTES[S.key], fxName = id => (this.FX.find(f => f.id === id) || this.FX[0]).name;
+    const styleObj = this.STYLES.find(s => s.id === S.style);
+    const raised = 'oklch(0.26 0.016 280)', ink = 'oklch(0.96 0.005 280)', muted = 'oklch(0.7 0.015 280)';
+    const accSoft = 'oklch(0.3 0.06 265)', accLine = 'oklch(0.6 0.14 265)';
+
+    const nav = {};
+    ['studio', 'beats', 'voix', 'instru'].forEach(id => {
+      const a = S.screen === id;
+      nav[id] = { bg: a ? 'oklch(0.21 0.016 280)' : 'transparent', fg: a ? ink : 'oklch(0.82 0.01 280)', iconBg: a ? 'oklch(0.68 0.17 265)' : 'oklch(0.2 0.014 280)', iconFg: a ? 'oklch(0.15 0.02 270)' : 'oklch(0.75 0.015 280)', go: () => this.go(id) };
+    });
+
+    // studio
+    const G = S.grid;
+    const tracks = S.tracks.map(t => {
+      const sel = t.id === S.sel;
+      const base = { color: col(t.hue, 0.76, 0.13), bg: col(t.hue, 0.27, 0.05), line: col(t.hue, 0.5, 0.1), labelColor: col(t.hue, 0.86, 0.08) };
+      let clips = [];
+      if (t.kind === 'drums' || t.kind === 'bass') {
+        S.blocks.forEach((b, bi) => {
+          const sec = this.SECTIONS[b];
+          if (t.kind === 'drums' && sec.drums === 'none') return;
+          if (t.kind === 'bass' && !sec.bass) return;
+          const barsArr = [];
+          for (let j = 0; j < 64; j++) {
+            const st = j % 16, light = sec.drums === 'light';
+            let k;
+            if (t.kind === 'drums') k = (!light && G[0][st]) ? 1 : (!light && (G[1][st] || G[2][st])) ? 0.72 : (G[3][st] || G[4][st]) ? 0.34 : G[5][st] ? 0.26 : 0.05;
+            else { const pat = this.BASS[S.style] || ''; const back = [0, 1, 2].find(o => pat[(st - o + 16) % 16] === 'x'); k = back === 0 ? 0.85 : back === 1 ? 0.55 : back === 2 ? 0.3 : 0.05; }
+            barsArr.push({ h: Math.max(5, Math.round((k * (0.88 + 0.12 * rnd(bi * 64 + j + t.hue))) * 100)) });
+          }
+          clips.push({ ...base, left: bi * 4 / bars * 100, width: 4 / bars * 100, label: b, isWave: true, isChords: false, bars: barsArr, chords: [] });
+        });
+      } else if (t.kind === 'chords') {
+        clips = S.blocks.map((b, bi) => ({ ...base, left: bi * 4 / bars * 100, width: 4 / bars * 100, label: b, isWave: false, isChords: true, bars: [], chords: [0, 1, 2, 3].map(k => ({ name: chords[k].name, line: k ? base.line : 'transparent' })) }));
+      } else if (t.kind === 'voice') {
+        const vc = this.voiceCurve();
+        clips = t.clips.filter(cl => cl.start < bars).map((cl, ci) => {
+          const len = Math.min(cl.len, bars - cl.start), n = len * 16, barsArr = [];
+          for (let j = 0; j < n; j++) {
+            const tt = j * sd, e = tt < vc.dur ? vc.env[Math.min(vc.env.length - 1, Math.floor(tt / vc.dur * vc.env.length))] : 0;
+            barsArr.push({ h: Math.max(4, Math.round(e * (0.6 + 0.4 * rnd(ci * 97 + j)) * 100)) });
+          }
+          return { ...base, left: cl.start / bars * 100, width: len / bars * 100, label: 'Voix démo', isWave: true, isChords: false, bars: barsArr, chords: [] };
+        });
+      } else if (t.kind === 'rec') {
+        const len = Math.max(1, t.levels.length), live = S.recId === t.id;
+        clips = [{ ...base, line: live ? 'oklch(0.66 0.2 25)' : base.line, left: t.startStep / total * 100, width: Math.min(len, total - t.startStep) / total * 100, label: live ? '● Enregistrement' : t.name, isWave: true, isChords: false, bars: t.levels.map(l => ({ h: Math.max(4, Math.round(l * 100)) })), chords: [] }];
+      }
+      return {
+        id: t.id, name: t.name, vol: t.vol, color: col(t.hue, 0.72, 0.14), clips,
+        headBg: sel ? 'oklch(0.25 0.03 270)' : 'transparent',
+        muteBg: t.mute ? 'oklch(0.75 0.15 70)' : 'transparent', muteFg: t.mute ? 'oklch(0.17 0.012 280)' : muted,
+        laneOpacity: t.mute ? 0.35 : 1,
+        hasFx: (t.kind === 'voice' || t.kind === 'rec') && t.fx !== 'none', fxLabel: fxName(t.fx),
+        select: () => this.setState({ sel: t.id }),
+        toggleMute: e => { e.stopPropagation(); this.updTrack(t.id, { mute: !t.mute }); },
+      };
+    });
+    const sections = S.blocks.map((b, i) => {
+      const a = S.playing && i === curBlock && S.screen !== 'beats';
+      return { name: b, left: i * 4 / bars * 100, width: 4 / bars * 100, bg: a ? accSoft : 'oklch(0.25 0.014 280)', fg: a ? 'oklch(0.88 0.07 265)' : muted };
+    });
+    const every = bars > 20 ? 4 : bars > 12 ? 2 : 1;
+    const barNums = Array.from({ length: bars }, (_, i) => i).filter(i => i % every === 0).map(i => ({ n: i + 1, left: i / bars * 100 }));
+    const selT = S.tracks.find(t => t.id === S.sel) || S.tracks[0];
+    const kindLabels = { drums: 'Motif ' + (styleObj ? styleObj.name : ''), bass: 'Synthé basse', chords: 'Nappe synthé', voice: 'Voix démo · générée', rec: selT.hasAudio ? 'Prise micro' : 'Prise' };
+    const isV = selT.kind === 'voice' || selT.kind === 'rec';
+    const insp = {
+      name: selT.name, color: col(selT.hue, 0.72, 0.14), kindLabel: kindLabels[selT.kind], vol: selT.vol, pan: selT.pan,
+      panLabel: selT.pan === 0 ? 'Centre' : (selT.pan < 0 ? 'G ' : 'D ') + Math.abs(selT.pan * 2),
+      onVol: e => this.updTrack(selT.id, { vol: +e.target.value }), onPan: e => this.updTrack(selT.id, { pan: +e.target.value }),
+      isVoice: isV, fxName: fxName(selT.fx), canDelete: selT.kind === 'rec',
+      actionLabel: isV ? 'Changer l\'effet de voix' : selT.kind === 'drums' ? 'Modifier le motif' : 'Modifier l\'instru',
+      action: () => isV ? this.setState({ screen: 'voix', applyTo: selT.id, fx: selT.fx, voiceSrc: selT.kind === 'rec' && this.buffers[selT.id] ? 'rec' : 'demo' }) : this.go(selT.kind === 'drums' ? 'beats' : 'instru'),
+      remove: () => this.setState(s => ({ tracks: s.tracks.filter(t => t.id !== selT.id), sel: 'voice', applyTo: 'voice' })),
+    };
+
+    // beats
+    const beatOn = S.playing && S.screen === 'beats', bStep = step % 16;
+    const presets = [...this.STYLES.map(s => ({ id: s.id, name: s.name })), { id: 'vide', name: 'Vide' }].map(p => {
+      const a = S.preset === p.id;
+      return { name: p.name, bg: a ? raised : 'transparent', fg: a ? ink : muted, pick: () => this.setPreset(p.id) };
+    });
+    const beatRows = this.ROWS.map((r, i) => {
+      const m = !!S.rowMute[r.id];
+      return {
+        name: r.name, color: col(r.hue), nameOpacity: m ? 0.45 : 1,
+        muteBg: m ? 'oklch(0.75 0.15 70)' : 'transparent', muteFg: m ? 'oklch(0.17 0.012 280)' : muted,
+        toggleMute: () => this.setState(s => ({ rowMute: { ...s.rowMute, [r.id]: !s.rowMute[r.id] } })),
+        preview: () => this.hit(r.id),
+        groups: [0, 1, 2, 3].map(g => ({
+          cells: [0, 1, 2, 3].map(cI => {
+            const st = g * 4 + cI, on = S.grid[i][st], cur = beatOn && st === bStep;
+            return {
+              bg: on ? (cur ? col(r.hue, 0.86, 0.12) : col(r.hue, m ? 0.45 : 0.7, m ? 0.05 : 0.14)) : (cur ? 'oklch(0.34 0.02 280)' : (g % 2 ? 'oklch(0.235 0.012 280)' : 'oklch(0.265 0.014 280)')),
+              scale: on && cur ? 'scale(1.06)' : 'scale(1)',
+              shadow: on && !m ? `0 0 14px oklch(0.7 0.14 ${r.hue} / ${cur ? 0.6 : 0.22})` : 'none',
+              toggle: () => this.toggleCell(i, st),
+            };
+          }),
+        })),
+      };
+    });
+    const stepDots = Array.from({ length: 16 }, (_, i) => ({ n: i % 4 === 0 ? String(i / 4 + 1) : '·', fg: beatOn && i === bStep ? ink : 'oklch(0.5 0.015 280)', gap: (i % 4 === 3 && i < 15) ? 5 : 0 }));
+    const pads = this.ROWS.map((r, i) => {
+      const lit = S.padHit === r.id || (beatOn && S.grid[i][bStep] && !S.rowMute[r.id]);
+      return { name: r.name, key: r.key, bg: lit ? col(r.hue, 0.72, 0.15) : col(r.hue, 0.25, 0.04), fg: lit ? 'oklch(0.15 0.02 280)' : ink, line: col(r.hue, lit ? 0.8 : 0.4, 0.1), scale: lit ? 'scale(0.97)' : 'scale(1)', hit: () => this.hit(r.id) };
+    });
+
+    // voix
+    const vc = this.voiceCurve();
+    const shift = S.fx === 'grave' ? 12 * Math.log2(0.7) : S.fx === 'aigu' ? 12 * Math.log2(1.42) : 0;
+    const effLine = S.fx === 'autotune' ? vc.corr : vc.raw.map(m => m + shift);
+    const all = vc.raw.concat(effLine);
+    const lo = Math.floor(Math.min(...all)) - 1, hi = Math.ceil(Math.max(...all)) + 1;
+    const W = 600, H = 240, y = m => ((hi - m) / (hi - lo) * H).toFixed(1);
+    const pts = arr => arr.map((m, i) => (i / (arr.length - 1) * W).toFixed(1) + ',' + y(m)).join(' ');
+    const sc = this.SCALES[S.scale], scaleMidis = [];
+    for (let m = lo; m <= hi; m++) if (sc.includes(((m - S.key) % 12 + 12) % 12)) scaleMidis.push(m);
+    const graph = {
+      raw: pts(vc.raw), eff: pts(effLine), effOpacity: S.fx === 'none' ? 0 : 1,
+      grid: scaleMidis.map(m => `M0 ${y(m)} H${W}`).join(' '),
+      labels: scaleMidis.map(m => ({ name: this.NOTES[m % 12], top: ((12 + (hi - m) / (hi - lo) * H) / (H + 24) * 100).toFixed(2), fg: m % 12 === S.key ? ink : 'oklch(0.56 0.015 280)', weight: m % 12 === S.key ? 700 : 500 })),
+    };
+    const recs = S.tracks.filter(t => t.kind === 'rec' && this.buffers[t.id]);
+    const lastRec = recs[recs.length - 1];
+    const srcIsRec = S.voiceSrc === 'rec' && !!lastRec;
+    let recBars = [];
+    if (lastRec) { const L = lastRec.levels, n = Math.min(120, L.length); for (let i = 0; i < n; i++) recBars.push({ h: Math.max(3, Math.round(L[Math.floor(i / n * L.length)] * 100)) }); }
+    const srcOpts = [{ id: 'demo', label: 'Voix démo' }, { id: 'rec', label: 'Ma dernière prise' }].map(o => {
+      const a = (o.id === 'rec') === srcIsRec, dis = o.id === 'rec' && !lastRec;
+      return { label: o.label, bg: a ? raised : 'transparent', fg: a ? ink : muted, opacity: dis ? 0.4 : 1, pick: () => dis ? this.toast('Enregistrez une prise d\'abord (touche R)') : this.setState({ voiceSrc: o.id }) };
+    });
+    const previewVoice = useFx => {
+      const c = this.ensureCtx(), t = c.currentTime + 0.05;
+      const dur = srcIsRec ? this.playBuf(this.buffers[lastRec.id], t, useFx ? S.fx : 'none', this.preview, 1, 0) : this.playVoice({ t, fx: S.fx, dest: this.preview, useFx });
+      this.voicePreview = { t0: t, dur }; this.setState({ voicePlaying: useFx ? 'fx' : 'raw' }); this.startRaf();
+    };
+    const fxList = this.FX.map(f => {
+      const a = S.fx === f.id;
+      return { name: f.name, desc: f.desc, bg: a ? accSoft : 'oklch(0.23 0.014 280)', line: a ? accLine : 'oklch(0.28 0.014 280)', pick: () => this.setState({ fx: f.id }) };
+    });
+    const keys = this.NOTES.map((n, i) => {
+      const a = S.key === i;
+      return { name: n, bg: a ? 'oklch(0.68 0.17 265)' : 'oklch(0.24 0.014 280)', fg: a ? 'oklch(0.15 0.02 270)' : 'oklch(0.85 0.01 280)', pick: () => this.setState({ key: i }) };
+    });
+    const scales = ['majeur', 'mineur'].map(s => ({ name: s === 'majeur' ? 'Majeure' : 'Mineure', bg: S.scale === s ? raised : 'transparent', fg: S.scale === s ? ink : muted, pick: () => this.setState({ scale: s }) }));
+    const applyTargets = S.tracks.filter(t => t.kind === 'voice' || t.kind === 'rec').map(t => {
+      const a = S.applyTo === t.id;
+      return { name: t.name, bg: a ? accSoft : 'transparent', line: a ? accLine : 'oklch(0.32 0.014 280)', pick: () => this.setState({ applyTo: t.id }) };
+    });
+    const retuneLabel = S.retune < 40 ? 'Naturel' : S.retune < 80 ? 'Équilibré' : 'Robotique';
+
+    // instru
+    const styles = this.STYLES.map(s => {
+      const a = S.selStyle === s.id;
+      return { name: s.name, desc: s.desc, bpm: s.bpm, bg: a ? accSoft : 'oklch(0.23 0.014 280)', line: a ? accLine : 'oklch(0.28 0.014 280)', pick: () => this.setState({ selStyle: s.id }) };
+    });
+    const moods = this.MOODS.map(m => {
+      const a = S.selMood === m.id;
+      return { name: m.id, bg: a ? 'oklch(0.96 0.005 280)' : 'transparent', fg: a ? 'oklch(0.17 0.012 280)' : 'oklch(0.85 0.01 280)', line: a ? 'oklch(0.96 0.005 280)' : 'oklch(0.34 0.014 280)', pick: () => this.setState({ selMood: m.id }) };
+    });
+    const songMode = S.playing && S.screen !== 'beats';
+    const chordTiles = chords.map((c, i) => {
+      const a = songMode && curBar % 4 === i;
+      return { name: c.name, deg: c.roman, bg: a ? accSoft : 'oklch(0.23 0.014 280)', line: a ? accLine : 'oklch(0.28 0.014 280)' };
+    });
+    const arrHead = S.blocks.map((b, i) => {
+      const a = songMode && i === curBlock;
+      return { name: b, bg: a ? accSoft : 'oklch(0.24 0.014 280)', fg: a ? 'oklch(0.88 0.07 265)' : muted };
+    });
+    const lane = (hue, fn) => S.blocks.map(b => { const v = fn(this.SECTIONS[b]); return { bg: v === 2 ? col(hue, 0.7, 0.14) : v === 1 ? col(hue, 0.42, 0.08) : 'oklch(0.22 0.012 280)' }; });
+    const arrRows = [
+      { name: 'Batterie', cells: lane(265, s => s.drums === 'full' ? 2 : s.drums === 'light' ? 1 : 0) },
+      { name: 'Basse', cells: lane(175, s => s.bass ? 2 : 0) },
+      { name: 'Accords', cells: lane(305, () => 2) },
+    ];
+    const pending = S.selStyle !== S.style || S.selMood !== S.mood;
+    const selStyleName = this.STYLES.find(s => s.id === S.selStyle).name;
+
+    return {
+      isStudio: S.screen === 'studio', isBeats: S.screen === 'beats', isVoix: S.screen === 'voix', isInstru: S.screen === 'instru',
+      nav, title: this.TITLES[S.screen][0], subtitle: this.TITLES[S.screen][1],
+      projMeta: `${S.bpm} BPM · ${keyName} ${S.scale}`, projLen: `${bars} mesures · ${fmt(total * sd)}`,
+      tracks, sections, barNums, barPct: (100 / bars).toFixed(4), headRef: this.headRef, seek: e => this.seek(e), insp,
+      trackCount: S.tracks.length, recCta: S.recording ? 'Arrêter l\'enregistrement' : 'Enregistrer une nouvelle prise au micro',
+      presets, beatRows, stepDots, pads,
+      graphTitle: srcIsRec ? 'Votre prise' : 'Hauteur de la voix', graph, srcIsDemo: !srcIsRec, srcIsRec, recBars, srcOpts,
+      legendEff: 'Avec ' + fxName(S.fx).toLowerCase(), fxList, isAutotune: S.fx === 'autotune', keys, scales,
+      retune: S.retune, retuneLabel, onRetune: e => this.setState({ retune: +e.target.value }),
+      previewRaw: () => previewVoice(false), previewFx: () => previewVoice(true),
+      previewRawLabel: S.voicePlaying === 'raw' ? 'Lecture…' : 'Écouter l\'original', previewFxLabel: S.voicePlaying === 'fx' ? 'Lecture…' : 'Écouter avec l\'effet',
+      voiceHeadRef: this.voiceHeadRef, applyTargets, fxName: fxName(S.fx),
+      applyFx: () => { const t = S.tracks.find(t => t.id === S.applyTo); if (!t) return; this.updTrack(t.id, { fx: S.fx }); this.toast(fxName(S.fx) + ' appliqué à « ' + t.name + ' »'); },
+      styles, moods, chordTiles, arrHead, arrRows,
+      generate: () => this.generate(), generateLabel: S.generating ? 'Composition…' : pending ? 'Générer l\'instru ' + selStyleName + ' · ' + S.selMood : 'Générer une nouvelle version',
+      resultOpacity: S.generating ? 0.4 : 1,
+      instruTitle: (styleObj ? styleObj.name : '') + ' · ' + S.mood,
+      instruMeta: `${keyName} ${S.scale} · ${S.bpm} BPM · ${bars} mesures · ${fmt(total * sd)}`,
+      listenLabel: S.playing ? 'Pause' : 'Écouter l\'instru', togglePlay: () => this.togglePlay(),
+      nextVariant: () => { this.setState({ selStyle: S.style, selMood: S.mood }, () => this.generate()); },
+      openStudio: () => this.go('studio'),
+      timeLabel: fmt(step * sd), totalLabel: fmt(total * sd), posLabel: `Mesure ${curBar + 1} · Temps ${Math.floor((step % 16) / 4) + 1}`,
+      playing: S.playing, notPlaying: !S.playing, toStart: () => this.toStart(), toggleRec: () => this.toggleRec(),
+      recBg: S.recording ? 'oklch(0.3 0.08 25)' : 'transparent', recRadius: S.recording ? '3px' : '50%',
+      bpm: S.bpm, bpmDown: () => this.setState({ bpm: Math.max(60, S.bpm - 2) }), bpmUp: () => this.setState({ bpm: Math.min(180, S.bpm + 2) }),
+      master: S.master, onMaster: e => this.setState({ master: +e.target.value }),
+      hasToast: !!S.toast, toast: S.toast,
+      exportMix: () => this.toast('Export WAV : disponible dans la version finale'),
+    };
+  }
+}
+</script>
+</body>
+</html>
