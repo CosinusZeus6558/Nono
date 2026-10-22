@@ -2,7 +2,8 @@
 import type { TuneParams } from './dsp/autotune';
 import type { WorkerRequest, WorkerResponse } from './dsp/worker';
 
-export interface Take { pcm: Float32Array; sr: number }
+/** `pcm` : mono, pour l'analyse et le traitement. `channels` : original stéréo d'un fichier importé, pour la lecture. */
+export interface Take { pcm: Float32Array; sr: number; channels?: Float32Array[] }
 export interface Processed { key: string; buf: AudioBuffer | null; rawMidi: Float32Array; outMidi: Float32Array }
 
 const takes = new Map<string, Take>();
@@ -28,8 +29,15 @@ const post = (m: WorkerRequest) => getWorker().postMessage(m);
 
 export const paramsKey = (p: TuneParams) => p.mode === 'none' ? 'none' : `${p.mode}|${p.key}|${p.scale}|${p.mode === 'autotune' ? p.retune : 0}`;
 
-export function addTake(id: string, pcm: Float32Array, sr: number) {
-  takes.set(id, { pcm, sr }); original.delete(id); processed.delete(id);
+export function mixdown(channels: Float32Array[]) {
+  if (channels.length === 1) return channels[0];
+  const n = channels[0].length, out = new Float32Array(n), g = 1 / channels.length;
+  for (const ch of channels) for (let i = 0; i < n; i++) out[i] += ch[i] * g;
+  return out;
+}
+
+export function addTake(id: string, pcm: Float32Array, sr: number, channels?: Float32Array[]) {
+  takes.set(id, { pcm, sr, channels }); original.delete(id); processed.delete(id);
   if (worker) post({ type: 'forget', takeId: id });
   notify();
 }
@@ -41,16 +49,17 @@ export function removeTake(id: string) {
 export const getTake = (id: string) => takes.get(id);
 export const takeDuration = (id: string) => { const t = takes.get(id); return t ? t.pcm.length / t.sr : 0; };
 
-function toBuffer(pcm: Float32Array, sr: number) {
-  const b = new AudioBuffer({ length: Math.max(1, pcm.length), sampleRate: sr, numberOfChannels: 1 });
-  b.copyToChannel(pcm as Float32Array<ArrayBuffer>, 0);
+function toBuffer(pcm: Float32Array | Float32Array[], sr: number) {
+  const chans = Array.isArray(pcm) ? pcm : [pcm];
+  const b = new AudioBuffer({ length: Math.max(1, chans[0].length), sampleRate: sr, numberOfChannels: chans.length });
+  chans.forEach((ch, i) => b.copyToChannel(ch as Float32Array<ArrayBuffer>, i));
   return b;
 }
 
 export function originalBuffer(id: string) {
   let b = original.get(id);
   const t = takes.get(id);
-  if (!b && t) { b = toBuffer(t.pcm, t.sr); original.set(id, b); }
+  if (!b && t) { b = toBuffer(t.channels ?? t.pcm, t.sr); original.set(id, b); }
   return b;
 }
 

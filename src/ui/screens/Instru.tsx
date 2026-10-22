@@ -3,10 +3,11 @@ import { chordsOf } from '../../audio/song';
 import { MOODS, SECTIONS, STYLES } from '../../music/presets';
 import { NOTES, fmtTime } from '../../music/theory';
 import { stepDur, totalSteps, useStore } from '../../store/project';
-import { col } from '../common';
+import { col, useTakesVersion } from '../common';
 
 export function Instru() {
   const S = useStore();
+  useTakesVersion();
   const total = totalSteps(S), bars = total / 16, cur = Math.min(S.step, total - 1);
   const curBar = Math.floor(cur / 16), curBlock = Math.floor(curBar / 4), songMode = S.playing && S.screen !== 'beats';
   const chords = chordsOf(S), styleName = STYLES.find(s => s.id === S.style)?.name ?? '';

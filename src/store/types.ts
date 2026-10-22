@@ -6,8 +6,8 @@ export type TrackKind = 'drums' | 'bass' | 'chords' | 'rec';
 export interface Track {
   id: string; name: string; kind: TrackKind; hue: number;
   vol: number; pan: number; mute: boolean;
-  /** Prises micro uniquement. */
-  takeId?: string; startStep?: number;
+  /** Pistes audio (prise micro ou fichier importé) uniquement. */
+  takeId?: string; startStep?: number; source?: 'mic' | 'file';
   /** Calage fin de la prise, en ms (positif = plus tard). */
   offsetMs?: number;
   tune: TuneMode; retune: number; fx: ColorFx;

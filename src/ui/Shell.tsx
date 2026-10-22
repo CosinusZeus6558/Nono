@@ -4,7 +4,24 @@ import { exportWav } from '../audio/render';
 import { NOTES, fmtTime } from '../music/theory';
 import { deleteProject, listProjects, openProject, saveProject, type ProjectMeta } from '../store/persist';
 import { newProject, projectOf, stepDur, totalSteps, useStore } from '../store/project';
-import { DownloadIcon, PauseIcon, PlayIcon, SCREENS } from './common';
+import { DownloadIcon, PauseIcon, PlayIcon, SCREENS, useTakesVersion } from './common';
+import { detectBrowser, promptInstall, useInstall } from './install';
+
+const InstallIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M12 7v6M9.5 10.5 12 13l2.5-2.5M8 20h8" /></svg>;
+
+async function install() {
+  if (!(await promptInstall())) useStore.setState({ installOpen: true });
+}
+
+function InstallButton({ className, iconOnly }: { className: string; iconOnly?: boolean }) {
+  const { installed } = useInstall();
+  if (installed) return null;
+  return (
+    <button className={className} onClick={install} aria-label="Installer l'appli" title="Installer Studio Nono sur cet appareil">
+      <InstallIcon />{!iconOnly && 'Installer l\'appli'}
+    </button>
+  );
+}
 
 const go = (screen: (typeof SCREENS)[number]['id']) => {
   if (screen !== useStore.getState().screen && useStore.getState().playing && !useStore.getState().recording) {
@@ -15,8 +32,9 @@ const go = (screen: (typeof SCREENS)[number]['id']) => {
 
 export function Sidebar() {
   const screen = useStore(s => s.screen), name = useStore(s => s.name);
-  const bpm = useStore(s => s.bpm), key = useStore(s => s.key), scale = useStore(s => s.scale), blocks = useStore(s => s.blocks);
-  const bars = totalSteps({ blocks }) / 16;
+  const bpm = useStore(s => s.bpm), key = useStore(s => s.key), scale = useStore(s => s.scale), blocks = useStore(s => s.blocks), tracks = useStore(s => s.tracks);
+  useTakesVersion();
+  const bars = totalSteps({ blocks, tracks, bpm }) / 16;
   return (
     <aside className="side">
       <div className="brand"><div className="logo" />Studio Nono</div>
@@ -37,6 +55,7 @@ export function Sidebar() {
           <span>{bars} mesures · {fmtTime(bars * 16 * stepDur(bpm))}</span>
         </div>
         <button className="btn small" onClick={() => useStore.setState({ projectsOpen: true })}>Mes projets</button>
+        <InstallButton className="btn small primary" />
       </div>
     </aside>
   );
@@ -61,6 +80,7 @@ export function Header() {
         <div className="hdr-title">{sc.title}</div>
         <div className="hdr-sub">{sc.subtitle}</div>
       </div>
+      <InstallButton className="btn hdr-proj hdr-install" iconOnly />
       <button className="btn hdr-proj" onClick={() => useStore.setState({ projectsOpen: true })}>Projets</button>
       <button className="btn primary" onClick={() => exportWav()}><DownloadIcon />Exporter</button>
     </header>
@@ -68,9 +88,10 @@ export function Header() {
 }
 
 export function Transport() {
-  const step = useStore(s => s.step), bpm = useStore(s => s.bpm), blocks = useStore(s => s.blocks);
+  const step = useStore(s => s.step), bpm = useStore(s => s.bpm), blocks = useStore(s => s.blocks), tracks = useStore(s => s.tracks);
   const playing = useStore(s => s.playing), recording = useStore(s => s.recording), master = useStore(s => s.master);
-  const total = totalSteps({ blocks }), sd = stepDur(bpm), cur = Math.min(step, total - 1);
+  useTakesVersion();
+  const total = totalSteps({ blocks, tracks, bpm }), sd = stepDur(bpm), cur = Math.min(step, total - 1);
   const setBpm = (b: number) => useStore.setState({ bpm: Math.max(60, Math.min(180, b)) });
   return (
     <footer className="transport">
@@ -104,12 +125,13 @@ export function Transport() {
 }
 
 export function Overlays() {
-  const toast = useStore(s => s.toastMsg), countIn = useStore(s => s.countIn), open = useStore(s => s.projectsOpen);
+  const toast = useStore(s => s.toastMsg), countIn = useStore(s => s.countIn), open = useStore(s => s.projectsOpen), installOpen = useStore(s => s.installOpen);
   return (
     <>
       {countIn > 0 && <div className="countin"><div>{countIn}</div></div>}
       {toast && <div className="toast" role="status">{toast}</div>}
       {open && <Projects />}
+      {installOpen && <InstallHelp />}
     </>
   );
 }
@@ -146,6 +168,35 @@ function Projects() {
           ))}
         </div>
         <div className="hint">Les projets sont enregistrés dans ce navigateur, sur cet appareil. Exportez en WAV pour garder vos morceaux ailleurs.</div>
+      </div>
+    </div>
+  );
+}
+
+const HELP: Record<ReturnType<typeof detectBrowser>, { title: string; steps: string[] }> = {
+  chromium: { title: 'Chrome ou Edge', steps: ['Cliquez sur l\'icône d\'installation à droite de la barre d\'adresse (un écran avec une flèche).', 'Ou ouvrez le menu ⋮ → « Installer Studio Nono » (Chrome) / « Applications → Installer ce site en tant qu\'application » (Edge).'] },
+  safari: { title: 'Safari sur Mac', steps: ['Menu Fichier → « Ajouter au Dock ».', 'Il faut macOS Sonoma (14) ou plus récent.'] },
+  ios: { title: 'iPhone ou iPad', steps: ['Ouvrez ce site dans Safari.', 'Touchez le bouton Partager, puis « Sur l\'écran d\'accueil ».'] },
+  android: { title: 'Android', steps: ['Ouvrez le menu ⋮ de Chrome → « Installer l\'application » ou « Ajouter à l\'écran d\'accueil ».'] },
+  firefox: { title: 'Firefox', steps: ['Firefox ne permet pas d\'installer ce type d\'appli sur ordinateur.', 'Ouvrez ce site dans Chrome ou Edge, puis cliquez sur « Installer l\'appli ».'] },
+};
+
+function InstallHelp() {
+  const b = detectBrowser(), close = () => useStore.setState({ installOpen: false });
+  const others = (Object.keys(HELP) as (keyof typeof HELP)[]).filter(k => k !== b);
+  return (
+    <div className="modal-bg" onClick={close}>
+      <div className="card modal" onClick={e => e.stopPropagation()} role="dialog" aria-label="Installer l'appli">
+        <div className="row"><div className="card-title">Installer Studio Nono</div><button className="btn small ghost" style={{ marginLeft: 'auto' }} onClick={close}>Fermer</button></div>
+        <div className="status">Une fois installée, l'appli s'ouvre dans sa propre fenêtre, depuis une icône sur le bureau ou l'écran d'accueil, et fonctionne même sans connexion.</div>
+        <div className="box">
+          <div className="hint">Sur votre navigateur ({HELP[b].title})</div>
+          <ol className="install-steps">{HELP[b].steps.map(s => <li key={s}>{s}</li>)}</ol>
+        </div>
+        <details className="install-more">
+          <summary>Autres navigateurs</summary>
+          {others.map(k => <div key={k}><b>{HELP[k].title}</b><ol className="install-steps">{HELP[k].steps.map(s => <li key={s}>{s}</li>)}</ol></div>)}
+        </details>
       </div>
     </div>
   );

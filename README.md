@@ -8,12 +8,18 @@ Tout tourne dans le navigateur, sans serveur. Ça fonctionne sur ordinateur comm
 
 | Écran | Ce qu'on y fait |
 | --- | --- |
-| **Studio** | Timeline multipiste : batterie, basse, accords et vos prises micro. Volume, panoramique, muet, calage fin des prises, export d'une piste seule. |
+| **Studio** | Timeline multipiste : batterie, basse, accords, vos prises micro et vos fichiers importés (MP3, WAV, OGG, M4A… par bouton ou glisser-déposer). Volume, panoramique, muet, calage fin, export d'une piste seule. Le morceau s'allonge jusqu'à la fin de la piste audio la plus longue. |
 | **Beats** | Séquenceur 6 × 16 pas avec presets (Trap, Lo-fi, Afro, Pop, Drill, House) et 6 pads jouables au doigt ou au clavier (Q S D F G H). |
-| **Voix** | Courbe de hauteur réellement détectée dans la prise, avant et après correction. Autotune (tonalité, gamme, force), Grave et Aigu (±4 demi-tons, durée inchangée), puis Robot, Radio, Écho ou Chœur. |
+| **Voix** | Sur une prise micro ou une voix importée : courbe de hauteur réellement détectée, avant et après correction. Autotune (tonalité, gamme, force), Grave et Aigu (±4 demi-tons, durée inchangée), puis Robot, Radio, Écho ou Chœur. |
 | **Instru** | Choix d'un style et d'une ambiance : accords, basse, batterie et structure (intro, couplet, refrain…) sont composés automatiquement. |
 
 Raccourcis : **Espace** pour lire ou mettre en pause, **R** pour enregistrer (avec un décompte d'une mesure).
+
+## Installer l'appli
+
+Le bouton **Installer l'appli** (barre latérale sur ordinateur, icône en haut sur téléphone) :
+- **Chrome et Edge** : ouvre directement la boîte d'installation. L'appli s'ouvre ensuite dans sa propre fenêtre, depuis le bureau ou le menu Démarrer, fonctionne hors connexion et se met à jour toute seule.
+- **Autres navigateurs** : affiche la marche à suivre (Safari Mac : Fichier → Ajouter au Dock ; iPhone : Partager → Sur l'écran d'accueil). Firefox ne permet pas l'installation.
 
 ## Lancer en local
 
@@ -40,7 +46,8 @@ L'appli est alors disponible à l'adresse `https://<utilisateur>.github.io/Nono/
 - **Enregistrement** : le micro est capté en PCM brut par un AudioWorklet. Chaque bloc est horodaté dans l'horloge audio, ce qui permet de caler la prise sur le tempo en compensant la latence. Sur les navigateurs sans AudioWorklet, un repli moins précis prend le relais.
 - **Autotune** : détection de hauteur YIN, recalage sur la gamme avec hystérésis et vitesse réglable, puis resynthèse TD-PSOLA. Le traitement se fait après l'enregistrement, dans un Web Worker. La prise d'origine est toujours conservée, et l'effet se modifie à tout moment.
 - **Export** : le morceau est rejoué dans un `OfflineAudioContext` avec exactement la même partition que la lecture, puis encodé en WAV 16 bits stéréo.
-- **Sauvegarde** : les projets et les prises sont stockés dans le navigateur (IndexedDB).
+- **Import** : le fichier est décodé par le navigateur (formats lisibles selon le navigateur, jusqu'à 10 min). La stéréo est conservée à la lecture ; l'analyse et les effets de hauteur travaillent sur le mélange mono.
+- **Sauvegarde** : les projets, les prises et les fichiers importés sont stockés dans le navigateur (IndexedDB).
 
 ```
 src/
@@ -54,6 +61,8 @@ design/       prototype Claude Design d'origine (référence)
 
 ## Limites connues
 
+- Appliquer Autotune, Grave ou Aigu à une piste stéréo la rend mono : c'est fait pour une voix, pas pour une instru complète.
+- Un enregistrement micro s'arrête à la fin du morceau (instru ou piste importée la plus longue).
 - L'autotune convient à une **voix seule, enregistrée au casque**. Si la musique repasse dans le micro, ou sur du souffle et des passages très graves, il produit des artefacts. Ce n'est pas le niveau d'un plugin professionnel.
 - Utilisez un **casque filaire**. Les casques Bluetooth ajoutent une latence importante et variable. Le curseur **Calage** d'une prise permet de la recaler à l'oreille.
 - Les projets restent **dans le navigateur de l'appareil** : rien n'est synchronisé entre ordinateur et téléphone. Exportez en WAV pour garder vos morceaux ailleurs. Vider les données du site efface les projets.

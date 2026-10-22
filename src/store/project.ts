@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { takeDuration } from '../audio/takes';
 import { generate } from '../music/generator';
 import { PATTERNS, STYLES, parsePattern, type PresetId, type StyleId } from '../music/presets';
 import type { Project, Screen, Track, VoiceSettings } from './types';
@@ -28,6 +29,7 @@ export interface UIState {
   selStyle: StyleId; selMood: string; generating: boolean;
   toastMsg: string | null; padHit: string | null; projectsOpen: boolean;
   voicePlaying: 'raw' | 'fx' | null;
+  installOpen: boolean;
   /** Incrémenté quand une prise ou son traitement change (force le rafraîchissement des formes d'onde). */
   takesRev: number;
 }
@@ -53,7 +55,7 @@ export const useStore = create<Store>()((set, get) => ({
   recording: false, recId: null, countIn: 0, liveLevels: [],
   sel: 'drums', voiceSrc: 'demo', demo: { tune: 'autotune', retune: 85, fx: 'none' },
   selStyle: 'lofi', selMood: 'Mélancolique', generating: false,
-  toastMsg: null, padHit: null, projectsOpen: false, voicePlaying: null, takesRev: 0,
+  toastMsg: null, padHit: null, projectsOpen: false, voicePlaying: null, installOpen: false, takesRev: 0,
 
   set: p => set(p),
   setProject: p => set({ ...p, step: 0, sel: p.tracks[0]?.id ?? '', voiceSrc: 'demo', selStyle: p.style, selMood: p.mood }),
@@ -88,5 +90,16 @@ export function projectOf(s: Store): Project {
   return p as unknown as Project;
 }
 
-export const totalSteps = (s: { blocks: unknown[] }) => Math.max(1, s.blocks.length) * 64;
 export const stepDur = (bpm: number) => 60 / bpm / 4;
+
+/** Longueur du morceau en pas : l'instru générée, prolongée jusqu'à la fin de la piste audio la plus longue (arrondi à la mesure). */
+export function totalSteps(s: Pick<Project, 'blocks' | 'tracks' | 'bpm'>, duration: (takeId: string) => number = takeDuration) {
+  let n = Math.max(1, s.blocks.length) * 64;
+  const sd = stepDur(s.bpm);
+  for (const t of s.tracks) {
+    if (!t.takeId || t.startStep === undefined) continue;
+    const d = duration(t.takeId);
+    if (d > 0) n = Math.max(n, Math.ceil((t.startStep + ((t.offsetMs ?? 0) / 1000 + d) / sd) / 16) * 16);
+  }
+  return n;
+}

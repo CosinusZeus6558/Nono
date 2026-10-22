@@ -68,7 +68,7 @@ input[type=range] { accent-color: var(--acc); width: 100%; margin: 0; }
 .hdr-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 0; overflow: hidden; }
 .hdr-title { font-size: 21px; font-weight: 700; letter-spacing: -0.015em; }
 .hdr-sub { font-size: 13px; color: oklch(0.66 0.015 280); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hdr-proj { display: none; }
+.hdr .hdr-proj { display: none; }
 
 /* ---------- boutons ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--btn-line); background: var(--btn); font-weight: 700; cursor: pointer; white-space: nowrap; }
@@ -131,8 +131,6 @@ input[type=range] { accent-color: var(--acc); width: 100%; margin: 0; }
 .clip-wave { position: absolute; top: 20px; bottom: 6px; left: 5px; right: 5px; }
 .clip-chords { position: absolute; top: 20px; bottom: 4px; left: 0; right: 0; display: flex; }
 .clip-chords div { flex: 1; min-width: 0; display: grid; place-items: center; font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; }
-.tl-add { height: 64px; }
-.tl-add .lane { padding: 10px; }
 .rec-cta { width: 100%; height: 100%; border-radius: 10px; border: 1px dashed oklch(0.36 0.014 280); background: transparent; color: oklch(0.68 0.015 280); font-size: 13px; white-space: nowrap; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .rec-cta:hover { background: oklch(0.23 0.014 280); color: oklch(0.9 0.01 280); }
 .rec-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--rec); flex: none; }
@@ -260,7 +258,7 @@ input[type=range] { accent-color: var(--acc); width: 100%; margin: 0; }
   .col { grid-template-rows: auto minmax(0, 1fr) auto auto; }
   .hdr { padding: 10px 16px; gap: 10px; }
   .hdr-title { font-size: 18px; }
-  .hdr-proj { display: inline-flex; }
+  .hdr .hdr-proj { display: inline-flex; }
   .hdr .btn { padding: 0 12px; height: 36px; }
   .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); background: var(--side); padding-bottom: env(safe-area-inset-bottom); }
   .tabbar button { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0 7px; border: 0; background: transparent; color: var(--dim); font-size: 11px; font-weight: 700; cursor: pointer; }
@@ -292,4 +290,16 @@ input[type=range] { accent-color: var(--acc); width: 100%; margin: 0; }
   .pad { height: 84px; }
   .graph { height: 220px; }
   .toast { bottom: 150px; }
+}
+
+/* ---------- import et installation ---------- */
+.tl-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.tl-actions .rec-cta { flex: 1 1 220px; width: auto; height: 46px; padding: 0 14px; }
+.tl.drop { outline: 2px dashed var(--acc); outline-offset: -2px; background: oklch(0.23 0.03 265); }
+.drop-hint { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 700; color: var(--acc-text); pointer-events: none; z-index: 2; }
+.install-steps { margin: 4px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; line-height: 1.45; }
+.install-more summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+.install-more > div { margin-top: 10px; font-size: 13px; }
+.hdr-install { width: 36px; padding: 0 !important; }
+@media (max-width: 760px) {
 }

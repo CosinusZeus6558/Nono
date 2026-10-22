@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { renderDemoVoice } from '../../audio/demoVoice';
 import type { TuneParams } from '../../audio/dsp/autotune';
 import { engine } from '../../audio/engine';
+import { AUDIO_ACCEPT, importFiles } from '../../audio/importer';
 import { addTake, getTake, isProcessing, peaks, processedFor, takeDuration } from '../../audio/takes';
 import { COLOR_FX, TUNES, type ScaleName } from '../../music/presets';
 import { NOTES, SCALES } from '../../music/theory';
@@ -72,6 +73,8 @@ export function Voix() {
   const dur = takeDuration(takeId);
   const wave = useMemo(() => (getTake(takeId) ? peaks(takeId, Math.max(0.01, dur / 300)) : new Float32Array()), [takeId, dur]);
 
+  const fileIn = useRef<HTMLInputElement>(null);
+  const importVoice = async (files: FileList) => { const id = await importFiles(files); if (id) S.set({ voiceSrc: id }); };
   const vhead = useRef<HTMLDivElement>(null);
   useEffect(() => engine.onPreviewHead(p => {
     const el = vhead.current; if (!el) return;
@@ -176,10 +179,12 @@ export function Voix() {
             <div className="status">Ces réglages s'appliquent directement à <b>« {src.name} »</b> : on les entend dans le studio et à l'export. L'enregistrement d'origine est conservé.</div>
           ) : (
             <>
-              <div className="status">La <b>voix démo</b> sert à essayer les effets. Enregistrez votre voix pour la transformer à son tour.</div>
+              <div className="status">La <b>voix démo</b> sert à essayer les effets. Enregistrez votre voix ou importez un fichier pour la transformer à son tour.</div>
               <button className="btn light" onClick={() => engine.toggleRec()}>Enregistrer une prise</button>
             </>
           )}
+          <button className="btn" onClick={() => fileIn.current?.click()}>Importer une voix (MP3, WAV…)</button>
+          <input ref={fileIn} type="file" accept={AUDIO_ACCEPT} hidden onChange={e => { if (e.target.files) importVoice(e.target.files); e.target.value = ''; }} />
         </div>
       </div>
     </div>

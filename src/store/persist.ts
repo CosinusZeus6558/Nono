@@ -1,6 +1,6 @@
 // Sauvegarde locale (IndexedDB du navigateur) : projets en JSON, prises en PCM brut.
 import { del, get, set } from 'idb-keyval';
-import { addTake } from '../audio/takes';
+import { addTake, mixdown } from '../audio/takes';
 import { newProject, projectOf, useStore } from './project';
 import type { Project } from './types';
 
@@ -22,12 +22,17 @@ export async function saveProject(p: Project) {
   await set(K.last, p.id);
 }
 
-export const saveTake = (id: string, pcm: Float32Array, sr: number) => set(K.take(id), { pcm, sr });
+interface StoredTake { pcm?: Float32Array; sr: number; channels?: Float32Array[] }
+
+/** Un fichier stéréo n'est stocké qu'une fois (ses canaux) ; le mono est recalculé au chargement. */
+export const saveTake = (id: string, pcm: Float32Array, sr: number, channels?: Float32Array[]) =>
+  set(K.take(id), channels ? { sr, channels } : { pcm, sr });
 
 async function loadTakes(p: Project) {
   await Promise.all(p.tracks.filter(t => t.takeId).map(async t => {
-    const tk = await get<{ pcm: Float32Array; sr: number }>(K.take(t.takeId!));
-    if (tk) addTake(t.takeId!, tk.pcm, tk.sr);
+    const tk = await get<StoredTake>(K.take(t.takeId!));
+    if (tk?.channels) addTake(t.takeId!, mixdown(tk.channels), tk.sr, tk.channels);
+    else if (tk?.pcm) addTake(t.takeId!, tk.pcm, tk.sr);
   }));
 }
 

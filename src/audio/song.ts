@@ -59,17 +59,18 @@ export function startTake(mix: Mix, S: Project, tr: Track, t: number, offset: nu
 /** Joue le pas `s` à l'instant `t`. En mode boucle (écran Beats), seule la batterie joue sur une mesure. */
 export function playStep(mix: Mix, S: Project, s: number, t: number, loop: boolean, onSource?: (src: AudioBufferSourceNode) => void) {
   const c = mix.ctx, st = s % 16, bar = Math.floor(s / 16);
-  const block = S.blocks[Math.floor(bar / 4)] || 'Couplet';
-  const sec = loop ? { drums: 'full', bass: false } : SECTIONS[block];
-  if (sec.drums !== 'none') ROWS.forEach((r, i) => {
+  const block = S.blocks[Math.floor(bar / 4)];
+  // Au-delà de l'instru générée (piste audio plus longue), seules les pistes audio continuent.
+  const sec = loop ? { drums: 'full', bass: false } : block ? SECTIONS[block] : null;
+  if (sec && sec.drums !== 'none') ROWS.forEach((r, i) => {
     if (!S.grid[i]?.[st] || S.rowMute[r.id]) return;
     if (sec.drums === 'light' && !(r.id === 'hat' || r.id === 'open' || r.id === 'perc')) return;
     drum(c, r.id, t, chan(mix, 'drums').g);
   });
   if (loop) return;
   const sd = stepDur(S.bpm), chord = chordsOf(S)[bar % 4];
-  if (st === 0) pad(c, chord.notes, t, sd * 16, chan(mix, 'chords').g, S.style === 'lofi');
-  if (sec.bass && BASS[S.style]?.[st] === 'x') bass(c, chord.root - 12, t, sd * 2.5, chan(mix, 'bass').g);
+  if (sec && st === 0) pad(c, chord.notes, t, sd * 16, chan(mix, 'chords').g, S.style === 'lofi');
+  if (sec?.bass && BASS[S.style]?.[st] === 'x') bass(c, chord.root - 12, t, sd * 2.5, chan(mix, 'bass').g);
   for (const tr of S.tracks) {
     if (tr.kind === 'rec' && tr.startStep === s) {
       const src = startTake(mix, S, tr, t, 0);

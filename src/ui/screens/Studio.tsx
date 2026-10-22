@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { engine } from '../../audio/engine';
+import { AUDIO_ACCEPT, importFiles } from '../../audio/importer';
 import { exportWav } from '../../audio/render';
 import { chordsOf, tuneOf } from '../../audio/song';
 import { isProcessing, peaks, takeDuration } from '../../audio/takes';
@@ -29,11 +30,18 @@ export function Studio() {
     engine.seek(Math.max(0, Math.min(total - 16, Math.floor((e.clientX - r.left) / r.width * bars) * 16)));
   };
   const sel = S.tracks.find(t => t.id === S.sel) ?? S.tracks[0];
+  const fileIn = useRef<HTMLInputElement>(null);
+  const [drop, setDrop] = useState(false);
+  const hasFiles = (e: React.DragEvent) => Array.from(e.dataTransfer.types).includes('Files');
 
   return (
     <div className="studio">
       <div className="tl-wrap">
-        <div className="tl">
+        <div className={'tl' + (drop ? ' drop' : '')} style={{ position: 'relative' }}
+          onDragOver={e => { if (hasFiles(e)) { e.preventDefault(); setDrop(true); } }}
+          onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDrop(false); }}
+          onDrop={e => { if (!hasFiles(e)) return; e.preventDefault(); setDrop(false); importFiles(e.dataTransfer.files); }}>
+          {drop && <div className="drop-hint">Déposez vos fichiers audio ici</div>}
           <div className="tl-inner">
             <div className="tl-row tl-ruler">
               <div className="tl-ruler-head">Pistes <span className="mono">{S.tracks.length}</span></div>
@@ -47,16 +55,17 @@ export function Studio() {
               </div>
             </div>
             {S.tracks.map(t => <TrackRow key={t.id} t={t} bars={bars} total={total} sd={sd} chords={chords.map(c => c.name)} />)}
-            <div className="tl-row tl-add">
-              <div style={{ borderRight: '1px solid var(--card-line)' }} />
-              <div className="lane" style={{ padding: 10 }}>
-                <button className="rec-cta" onClick={() => engine.toggleRec()}>
-                  <span className="rec-dot" />{S.recording ? 'Arrêter l\'enregistrement' : 'Enregistrer une nouvelle prise au micro'}
-                </button>
-              </div>
-            </div>
             <div className="playhead-layer"><div ref={head} className="playhead" style={{ left: Math.min(S.step, total) / total * 100 + '%' }} /></div>
           </div>
+        </div>
+        <div className="tl-actions">
+          <button className="rec-cta" onClick={() => engine.toggleRec()}>
+            <span className="rec-dot" />{S.recording ? 'Arrêter l\'enregistrement' : 'Enregistrer une prise au micro'}
+          </button>
+          <button className="rec-cta" title="MP3, WAV, OGG, M4A… ou glissez-déposez un fichier sur la timeline" onClick={() => fileIn.current?.click()}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V4M7 9l5-5 5 5M5 20h14" /></svg>Importer un fichier audio
+          </button>
+          <input ref={fileIn} type="file" accept={AUDIO_ACCEPT} multiple hidden onChange={e => { if (e.target.files) importFiles(e.target.files); e.target.value = ''; }} />
         </div>
       </div>
       {sel && <Inspector t={sel} />}
@@ -143,7 +152,7 @@ function TrackRow({ t, bars, total, sd, chords }: { t: Track; bars: number; tota
 function Inspector({ t }: { t: Track }) {
   const S = useStore();
   const styleName = STYLES.find(s => s.id === S.style)?.name ?? '';
-  const kindLabel = { drums: 'Motif ' + styleName, bass: 'Synthé basse', chords: 'Nappe synthé', rec: 'Prise micro' }[t.kind];
+  const kindLabel = { drums: 'Motif ' + styleName, bass: 'Synthé basse', chords: 'Nappe synthé', rec: t.source === 'file' ? 'Fichier importé' : 'Prise micro' }[t.kind];
   const isRec = t.kind === 'rec';
   return (
     <aside className="insp">
@@ -168,7 +177,7 @@ function Inspector({ t }: { t: Track }) {
       {isRec && (
         <>
           <div className="box">
-            <div className="hint">Effet de voix</div>
+            <div className="hint">Effet de voix (dans l'écran Voix)</div>
             <b>{voiceLabel(t) || 'Aucun'}</b>
           </div>
           <div className="field">
@@ -183,7 +192,7 @@ function Inspector({ t }: { t: Track }) {
           {isRec ? 'Changer l\'effet de voix' : t.kind === 'drums' ? 'Modifier le motif' : 'Modifier l\'instru'}
         </button>
         <button className="btn ghost" onClick={() => exportWav(t.id)}>Exporter cette piste seule</button>
-        {isRec && <button className="btn danger" onClick={() => { if (confirm(`Supprimer « ${t.name} » ?`)) engine.deleteTrack(t.id); }}>Supprimer la prise</button>}
+        {isRec && <button className="btn danger" onClick={() => { if (confirm(`Supprimer « ${t.name} » ?`)) engine.deleteTrack(t.id); }}>{t.source === 'file' ? 'Supprimer la piste' : 'Supprimer la prise'}</button>}
       </div>
     </aside>
   );
